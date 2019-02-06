@@ -60,6 +60,10 @@ def create_office():
         # return new list of offices
         return response('Your political office was created successfully', 201, office)
 
+    elif request.method == 'GET':
+        """ end point for get offices """
+
+        return response('Request was successful', 200, offices)
 
 def generate_unique_id(list):
     """ unique ID creation for a new item to be added to the list"""
