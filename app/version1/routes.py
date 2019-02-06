@@ -65,7 +65,7 @@ def create_office():
 
         return response('Request was successful', 200, offices)
 
-@bp.route('/parties/<int:id>', methods=['GET'])
+@bp.route('/parties/<int:id>', methods=['GET', 'DELETE'])
 def get_party(id):
 
     obtained = filter (lambda party: party['id'] == id, parties)
@@ -76,6 +76,14 @@ def get_party(id):
 
     if request.method == 'GET':
         return response('Request was successful', 200, obtained)
+
+    else:
+        for p in range(len(parties)):
+            if parties[p]['id'] == id:
+                party = parties.pop(p)
+                break
+        return response(
+            '{} deleted successfully'.format(party['name']), 200, [party])
 
 def generate_unique_id(list):
     """ unique ID creation for a new item to be added to the list"""
