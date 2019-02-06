@@ -60,3 +60,15 @@ class TestParty(Skeleton):
         self.assertEqual(data['data'][0]['id'], 1)
         self.assertEqual(data['data'][0]['name'], 'Kanu')
         self.assertEqual(res.status_code, 200)
+
+    def test_delete_party(self):
+        self.client.post('/api/version1/parties', json=self.party)
+
+        res = self.client.delete('/api/version1/parties/1')
+        data = res.get_json()
+
+        self.assertEqual(data['status'], 200)
+        self.assertEqual(data['message'], 'PNU deleted successfully')
+        self.assertEqual(len(data['data']), 1)
+        self.assertEqual(data['data'][0]['id'], 1)
+        self.assertEqual(res.status_code, 200)
