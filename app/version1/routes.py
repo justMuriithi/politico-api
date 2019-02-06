@@ -85,6 +85,25 @@ def get_party(id):
         return response(
             '{} deleted successfully'.format(party['name']), 200, [party])
 
+@bp.route('/parties/<int:id>/<string:name>', methods=['PATCH'])
+def edit_party(id, name):
+
+    obtained = filter (lambda party: party['id'] == id, parties)
+    obtained = list(obtained)
+
+    if len(obtained) == 0:
+        return response('Party not found', 404, [])
+
+    
+    for p in range(len(parties)):
+        if parties[p]['id'] == id:
+            party = parties[p]
+            party['name'] = name
+            parties[p] = party
+            break
+    return response(
+        '{} updated successfully'.format(party['name']), 200, [party])
+
 def generate_unique_id(list):
     """ unique ID creation for a new item to be added to the list"""
 
