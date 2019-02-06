@@ -35,3 +35,15 @@ class TestParty(Skeleton):
         self.assertEqual(data['message'], 'Request was successful')
         self.assertEqual(len(data['data']), 2)
         self.assertEqual(res.status_code, 200)
+
+    def test_get_party(self):
+        self.client.post('/api/version1/parties', json=self.party)
+
+        res = self.client.get('/api/version1/parties/1')
+        data = res.get_json()
+
+        self.assertEqual(data['status'], 200)
+        self.assertEqual(data['message'], 'Request was successful')
+        self.assertEqual(len(data['data']), 1)
+        self.assertEqual(data['data'][0]['id'], 1)
+        self.assertEqual(res.status_code, 200)
