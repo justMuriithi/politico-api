@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify, make_response
 bp = Blueprint('api', __name__, url_prefix='/api/version1')
 
 parties = []
-
+offices = []
 
 @bp.route('/parties', methods=['POST', 'GET'])
 def create_party():
@@ -34,6 +34,31 @@ def create_party():
         """ end point for get parties """
 
         return response('Request was successful', 200, parties)
+
+
+@bp.route('/offices', methods=['POST', 'GET'])
+def create_office():
+    if request.method == 'POST':
+        """ end point for create_office """
+
+        data = request.get_json()
+
+        try:
+            category = data['category']
+            name = data['name']
+    
+        except KeyError as e:
+            return response("{} field is required".format(e.args[0]), 400)
+
+        office = {
+            "id": generate_unique_id(offices),
+            "category": category,
+            "name": name
+        }
+
+        offices.append(office)
+        # return new list of offices
+        return response('Your political office was created successfully', 201, office)
 
 
 def generate_unique_id(list):
