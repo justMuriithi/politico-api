@@ -85,6 +85,7 @@ def get_party(id):
         return response(
             '{} deleted successfully'.format(party['name']), 200, [party])
 
+
 @bp.route('/parties/<int:id>/<string:name>', methods=['PATCH'])
 def edit_party(id, name):
 
@@ -103,6 +104,18 @@ def edit_party(id, name):
             break
     return response(
         '{} updated successfully'.format(party['name']), 200, [party])
+  
+@bp.route('/offices/<int:id>', methods=['GET'])
+def get_office(id):
+
+    obtained = filter (lambda office: office['id'] == id, offices)
+    obtained = list(obtained)
+
+    if len(obtained) == 0:
+        return response('Office not found', 404, [])
+
+    if request.method == 'GET':
+        return response('Request was successful', 200, obtained)
 
 def generate_unique_id(list):
     """ unique ID creation for a new item to be added to the list"""
