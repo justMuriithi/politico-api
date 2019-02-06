@@ -65,6 +65,18 @@ def create_office():
 
         return response('Request was successful', 200, offices)
 
+@bp.route('/parties/<int:id>', methods=['GET'])
+def get_party(id):
+
+    obtained = filter (lambda party: party['id'] == id, parties)
+    obtained = list(obtained)
+
+    if len(obtained) == 0:
+        return response('Party not found', 404, [])
+
+    if request.method == 'GET':
+        return response('Request was successful', 200, obtained)
+
 def generate_unique_id(list):
     """ unique ID creation for a new item to be added to the list"""
 
