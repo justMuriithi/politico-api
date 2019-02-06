@@ -47,3 +47,16 @@ class TestParty(Skeleton):
         self.assertEqual(len(data['data']), 1)
         self.assertEqual(data['data'][0]['id'], 1)
         self.assertEqual(res.status_code, 200)
+
+    def test_edit_party(self):
+        self.client.post('/api/version1/parties', json=self.party)
+
+        res = self.client.patch('/api/version1/parties/1/Kanu')
+        data = res.get_json()
+
+        self.assertEqual(data['status'], 200)
+        self.assertEqual(data['message'], 'Kanu updated successfully')
+        self.assertEqual(len(data['data']), 1)
+        self.assertEqual(data['data'][0]['id'], 1)
+        self.assertEqual(data['data'][0]['name'], 'Kanu')
+        self.assertEqual(res.status_code, 200)
