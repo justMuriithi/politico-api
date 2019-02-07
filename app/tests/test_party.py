@@ -8,7 +8,7 @@ class TestParty(Skeleton):
         
         self.party = {
             "name": "Kanu",
-            "hq_address": "Eldoret",
+            "hqAddress": "Eldoret",
             "logo_url":"url"
         }
     # clear all lists after tests
@@ -17,7 +17,7 @@ class TestParty(Skeleton):
         parties.clear()
 
     def test_create_party(self):
-        res = self.client.post('/api/version1/parties/', json = self.party)
+        res = self.client.post('/api/version1/parties', json = self.party)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
@@ -68,7 +68,7 @@ class TestParty(Skeleton):
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
-        self.assertEqual(data['message'], 'PNU deleted successfully')
+        self.assertEqual(data['message'], 'Kanu deleted successfully')
         self.assertEqual(len(data['data']), 1)
         self.assertEqual(data['data'][0]['id'], 1)
         self.assertEqual(res.status_code, 200)
