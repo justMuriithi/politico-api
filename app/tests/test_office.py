@@ -23,4 +23,14 @@ class TestOffice(Skeleton):
         self.assertEqual(data['message'], 'Your political office was created successfully')
         self.assertEqual(res.status_code, 201)
 
-   
+    def test_get_offices(self):
+        res = self.client.post('/api/version1/offices', json = self.office)
+        res = self.client.post('/api/version1/offices', json = self.office)
+
+        res = self.client.get('/api/version1/offices')
+        data = res.get_json()
+
+        self.assertEqual(data['status'], 200)
+        self.assertEqual(data['message'], 'Request was successful')
+        self.assertEqual(len(data['data']), 2)
+        self.assertEqual(res.status_code, 200)
