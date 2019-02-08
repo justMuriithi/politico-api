@@ -9,9 +9,9 @@ def create_app(config_name):
     '''creating the app using the configurations in the dictionary created in the .config file'''
     
     #to allow for heroku devployment
-    is_prod = os.environ.get('IS_HEROKU', None)
-    if is_prod:
-        config_name = 'development'
+    #is_prod = os.environ.get('IS_HEROKU', None)
+    #if is_prod:
+    config_name = 'development'
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
