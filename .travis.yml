@@ -5,6 +5,9 @@ python:
 install:
   - pip install -r requirements.txt  
 
+before script:
+  - export APP_SETTINGS="testing"
+
 script:
   - pytest --cov=app
 
