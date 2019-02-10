@@ -2,7 +2,8 @@
 import os
 from flask import Flask
 from instance.config import app_config
-from .version1 import routes
+from .version1.views import offices, parties
+from .version1.blueprints import bp
 """importing the configurations from the .config file which is in the instance folder"""
 
 def create_app(config_name):
@@ -18,6 +19,6 @@ def create_app(config_name):
     app.config.from_pyfile('config.py')
     app.secret_key = os.getenv("SECRET")
 
-    app.register_blueprint(routes.bp)
+    app.register_blueprint(bp)
 
     return app
