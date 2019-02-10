@@ -1,6 +1,6 @@
 '''Creating app'''
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from instance.config import app_config
 from .version1.views import offices, parties
 from .version1.blueprints import bp
@@ -20,5 +20,26 @@ def create_app(config_name):
     app.secret_key = os.getenv("SECRET")
 
     app.register_blueprint(bp)
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        """ Handler for error 404 """
+
+        return jsonify({
+            'status': 404, 'message': 'The requested resource was not found'
+            })
+
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        """ Handler for error 405 """
+
+        return jsonify({'status': 405, 'message': 'Method not allowed'})
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        """ Handler for error 400 """
+
+        return jsonify({'status': 400, 'message': 'Please review your request and try again'})
+
 
     return app
