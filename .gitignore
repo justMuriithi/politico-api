@@ -103,5 +103,6 @@ venv.bak/
 .mypy_cache/
 
 #vscode settings
-.vscode
-vscode/
+.vscode/
+.vscode/launch.json
+.vscode/settings.json
