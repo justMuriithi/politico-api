@@ -4,12 +4,18 @@
 Politico enables citizens give their mandate to politicians running for different government offices while building trust in the process through transparency.
 
 ## API Endpoints
-|`/api/version1/parties` | `POST` | `Create a political party ` | 
-|`/api/version1/parties` | `GET`| `Fetch all political parties ` |
-|`/api/version1/parties/<int:id>` | `GET` |   `Fetch a specific political party` |
-|`/api/version1/parties/<int:id>` | `DELETE` |   `Delete a specific political party` |
-|`/api/version1/<int:id>/name` | `PATCH` | `Edit a political party` |
+| `/api/version1/parties` | `POST` | `Create a political party ` | 
+
+| `/api/version1/parties` | `GET` | `Fetch all political parties ` |
+
+| `/api/version1/parties/<int:id>` | `GET` | `Fetch a specific political party` |
+
+| `/api/version1/parties/<int:id>` | `DELETE` | `Delete a specific political party` |
+
+|`/api/version1/parties/<int:id>/name` | `PATCH` | `Edit a political party` |
+
 |`/api/version1/offices` | `POST`| `Create Political office` |
+
 |`/api/version1/offices` | `GET` | `Fetch all political offices` |
 ## Requirements
 - [Python 3](https://www.python.org/)
