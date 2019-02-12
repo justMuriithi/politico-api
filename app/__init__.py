@@ -2,8 +2,8 @@
 import os
 from flask import Flask, jsonify
 from instance.config import app_config
-from .version1.views import offices, parties
-from .version1.blueprints import bp
+from .v2.views import offices, parties
+from .v2.blueprints import bp
 """importing the configurations from the .config file which is in the instance folder"""
 
 def create_app(config_name):
