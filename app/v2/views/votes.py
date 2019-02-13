@@ -60,7 +60,7 @@ def get_candidate_votes(id):
         'Success', 200, len(obtained), obtained)
 
 
-@bp.route('/office/<office-id>/result', methods=['GET'])
+@bp.route('/offices/<office-id>/result', methods=['GET'])
 def get_office_votes(id):
     """ Gets all votes for a specific office """
 
