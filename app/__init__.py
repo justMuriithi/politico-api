@@ -2,7 +2,7 @@
 import os
 from flask import Flask, jsonify
 from instance.config import app_config
-from .v2.views import offices, parties
+from .v2.views import offices, parties, users, votes, candidates
 from .v2.blueprints import bp
 """importing the configurations from the .config file which is in the instance folder"""
 
