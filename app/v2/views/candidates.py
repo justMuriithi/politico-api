@@ -13,7 +13,7 @@ from app.v2.blueprints import bp
 candidates = Candidate.candidates
 
 
-@bp.route('/offices/<office-id>/register', methods=['POST', 'GET'])
+@bp.route('/offices/register', methods=['POST', 'GET'])
 def post_candidate():
     message = 'Success'
     status = 200
@@ -61,8 +61,7 @@ def post_candidate():
     else:
         return response(message, status, response_data)
 
-
-@bp.route('/offices/<office-id>/candidates/<int:id>', methods=['GET'])
+@bp.route('/candidates/<int:id>', methods=['GET'])
 def get_candidate(id):
 
     model = Candidate()
