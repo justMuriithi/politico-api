@@ -1,4 +1,4 @@
-from app.tests.version1.base_test import Base
+from app.tests.v2.base_test import Base
 
 
 class TestUsers(Base):
@@ -21,7 +21,7 @@ class TestUsers(Base):
 
     # tests for POST auth/signup
     def test_register_user(self):
-        res = self.client.post('/api/version1/auth/signup', json=self.user)
+        res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
@@ -31,8 +31,8 @@ class TestUsers(Base):
     def test_register_user_email_exists(self):
         """ Tests that a user is not created twice with same email """
 
-        res = self.client.post('/api/version1/auth/signup', json=self.user)
-        res = self.client.post('/api/version1/auth/signup', json=self.user)
+        res = self.client.post('/api/v2/auth/signup', json=self.user)
+        res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -42,7 +42,7 @@ class TestUsers(Base):
     def test_register_user_missing_fields(self):
         """ Tests when some fields are missing e.g firstname """
 
-        res = self.client.post('/api/version1/auth/signup', json={
+        res = self.client.post('/api/v2/auth/signup', json={
             "lastname": "Njoki"
         })
         data = res.get_json()
@@ -54,7 +54,7 @@ class TestUsers(Base):
     def test_register_user_no_data(self):
         """ Tests when no data is provided """
 
-        res = self.client.post('/api/version1/auth/signup')
+        res = self.client.post('/api/v2/auth/signup')
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -65,7 +65,7 @@ class TestUsers(Base):
         """ Tests when integer is provided for firstname """
 
         self.user['firstname'] = 3
-        res = self.client.post('/api/version1/auth/signup', json=self.user)
+        res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -76,7 +76,7 @@ class TestUsers(Base):
         """ Tests when bool is not provided for isAdmin """
 
         self.user['isAdmin'] = "true"
-        res = self.client.post('/api/version1/auth/signup', json=self.user)
+        res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
