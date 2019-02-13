@@ -12,7 +12,7 @@ from app.v2.blueprints import bp
 votes = Vote.votes
 
 
-@bp.route('/votes/', methods=['POST', 'GET'])
+@bp.route('/votes', methods=['POST', 'GET'])
 def vote():
     if request.method == 'POST':
         """ Create vote end point """
@@ -60,7 +60,7 @@ def get_candidate_votes(id):
         'Success', 200, len(obtained), obtained)
 
 
-@bp.route('/offices/<office-id>/result', methods=['GET'])
+@bp.route('/offices/<int:id>/result', methods=['GET'])
 def get_office_votes(id):
     """ Gets all votes for a specific office """
 

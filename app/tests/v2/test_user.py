@@ -9,7 +9,7 @@ class TestUsers(Base):
         self.user = {
             "firstname": "Tony",
             "lastname": "Maina",
-            "national_id": "5549260",
+            "national_id": 5549260,
             "email": "Tony@demo.com",
             "isAdmin": True
         }
