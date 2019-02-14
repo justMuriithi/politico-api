@@ -16,6 +16,7 @@ def response(message, code, data=[]):
     }
     return make_response(jsonify(response), code)
 
+
 def response_error(message, code):
     """ Creates a basic error reposnse """
 
@@ -24,6 +25,7 @@ def response_error(message, code):
         "error": message
     }
     return make_response(jsonify(response), code)
+
 
 def exists(key, value, collection):
     """ Checks if list contains certain item based on certain key """

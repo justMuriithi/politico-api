@@ -4,7 +4,6 @@ from app.v2.models.offices_model import Office
 from app.v2.blueprints import bp
 
 
-
 @bp.route('/offices', methods=['POST', 'GET'])
 def create_office():
     if request.method == 'POST':

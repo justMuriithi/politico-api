@@ -44,7 +44,6 @@ class Office(BaseModel):
             self.error_code = 422
             return False
 
-
         if self.find_by('name', self.name):
             self.error_message = "{} already exists".format(self.object_name)
             self.error_code = 409

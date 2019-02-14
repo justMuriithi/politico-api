@@ -1,5 +1,6 @@
 from app.tests.version1.base_test import Base
 
+
 class TestVote(Base):
     def setUp(self):
         super().setUp()
@@ -32,7 +33,8 @@ class TestVote(Base):
         self.client.post('/api/version1/offices', json=self.office)
         self.client.post('/api/version1/parties', json=self.party)
         self.client.post('/api/version1/auth/login', json=self.user)
-        self.client.post('/api/version1/offices/office-id/register', json=self.candidate)
+        self.client.post(
+            '/api/version1/offices/office-id/register', json=self.candidate)
 
     # clear all lists after tests
     def tearDown(self):
@@ -72,7 +74,6 @@ class TestVote(Base):
         self.assertEqual(data['status'], 400)
         self.assertEqual(data['error'], 'No data was provided')
         self.assertEqual(res.status_code, 400)
-
 
     def test_vote_twice(self):
         """ Tests when user attempts to vote twice for same office """

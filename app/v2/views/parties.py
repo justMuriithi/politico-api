@@ -5,7 +5,6 @@ from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
 
 
-
 @bp.route('/parties', methods=['POST', 'GET'])
 @jwt_required
 def create_party():

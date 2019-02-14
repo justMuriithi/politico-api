@@ -2,6 +2,7 @@ from app.v2.util.validate import generate_id, exists, validate_ints
 from app.v2.util.validate import validate_strings
 from .base_model import BaseModel
 
+
 class Vote(BaseModel):
     """ model for political vote """
 
