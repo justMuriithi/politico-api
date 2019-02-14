@@ -30,7 +30,8 @@ class BaseModel():
         item = self.as_json()
         for key, value in item.items():
             if not value:
-                self.error_message = "Please provide a {} for the {}".format(key, self.object_name)
+                self.error_message = "Please provide a {} for the {}".format(
+                    key, self.object_name)
                 self.error_code = 400
                 return False
         return True

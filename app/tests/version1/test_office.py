@@ -1,27 +1,30 @@
 from base_test import Base
 from app.version1.models.db import Database
 
+
 class TestOffice(Base):
 
     def setUp(self):
         super().setUp()
 
         self.offices = Database().get_table(Database.OFFICES)
-  
+
         self.office = {
             "category": "National",
             "name": "President"
         }
     # clear all lists after tests
+
     def tearDown(self):
         super().tearDown()
 
     def test_create_office(self):
-        res = self.client.post('/api/version1/offices', json = self.office)
+        res = self.client.post('/api/version1/offices', json=self.office)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
-        self.assertEqual(data['message'], 'Your political office was created successfully')
+        self.assertEqual(
+            data['message'], 'Your political office was created successfully')
         self.assertEqual(res.status_code, 201)
 
     def test_create_office_name_exists(self):
@@ -52,9 +55,9 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_get_offices(self):
-        res = self.client.post('/api/version1/offices', json = self.office)
+        res = self.client.post('/api/version1/offices', json=self.office)
         self.office['name'] = 'One name'
-        res = self.client.post('/api/version1/offices', json = self.office)
+        res = self.client.post('/api/version1/offices', json=self.office)
         self.office['name'] = 'Another name'
 
         res = self.client.get('/api/version1/offices')
@@ -64,7 +67,7 @@ class TestOffice(Base):
         self.assertEqual(data['message'], 'Request was successful')
         self.assertEqual(len(data['data']), 2)
         self.assertEqual(res.status_code, 200)
-    
+
     def test_get_offices_no_data(self):
         res = self.client.get('/api/version1/offices')
         data = res.get_json()
@@ -75,7 +78,7 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_office(self):
-        self.client.post('/api/version1/offices', json = self.office)
+        self.client.post('/api/version1/offices', json=self.office)
 
         res = self.client.get('/api/version1/offices/1')
         data = res.get_json()

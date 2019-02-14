@@ -8,7 +8,6 @@ from app.v2.blueprints import bp
 from werkzeug.security import check_password_hash
 
 
-
 @bp.route('/auth/signup', methods=['POST'])
 def register_user():
     """ Register user end point """
@@ -30,7 +29,7 @@ def register_user():
     user = User(first_name, last_name, national_id, email, is_admin)
 
     if not user.validate_object():
-            return response_error(user.error_message, user.error_code)
+        return response_error(user.error_message, user.error_code)
 
     user.save()
 

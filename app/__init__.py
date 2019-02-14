@@ -6,10 +6,11 @@ from .v2.views import offices, parties, users, votes, candidates
 from .v2.blueprints import bp
 """importing the configurations from the .config file which is in the instance folder"""
 
+
 def create_app(config_name):
     '''creating the app using the configurations in the dictionary created in the .config file'''
-    
-    #to allow for heroku devployment
+
+    # to allow for heroku devployment
     is_prod = os.environ.get('IS_HEROKU', None)
     if is_prod:
         config_name = 'development'
@@ -27,7 +28,7 @@ def create_app(config_name):
 
         return jsonify({
             'status': 404, 'message': 'The requested resource was not found'
-            })
+        })
 
     @app.errorhandler(405)
     def method_not_allowed(error):
@@ -40,6 +41,5 @@ def create_app(config_name):
         """ Handler for error 400 """
 
         return jsonify({'status': 400, 'message': 'Please review your request and try again'})
-
 
     return app

@@ -1,6 +1,7 @@
 from base_test import Base
 from app.v2.models.db import Database
 
+
 class TestParty(Base):
 
     def setUp(self):
@@ -13,15 +14,17 @@ class TestParty(Base):
             "hqAddress": "Eldoret"
         }
     # clear all lists after tests
+
     def tearDown(self):
         super().tearDown()
 
     def test_create_party(self):
-        res = self.client.post('/api/v2/parties', json = self.party)
+        res = self.client.post('/api/v2/parties', json=self.party)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
-        self.assertEqual(data['message'], 'Your political party was created successfully')
+        self.assertEqual(
+            data['message'], 'Your political party was created successfully')
         self.assertEqual(res.status_code, 201)
 
     def test_create_party_name_exists(self):
@@ -52,9 +55,9 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_get_parties(self):
-        res = self.client.post('/api/v2/parties', json = self.party)
+        res = self.client.post('/api/v2/parties', json=self.party)
         self.party['name'] = 'One name'
-        res = self.client.post('/api/v2/parties', json = self.party)
+        res = self.client.post('/api/v2/parties', json=self.party)
         self.party['name'] = 'Another name'
         res = self.client.get('/api/v2/parties')
         data = res.get_json()

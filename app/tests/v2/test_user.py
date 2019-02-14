@@ -27,7 +27,7 @@ class TestUsers(Base):
         self.assertEqual(data['status'], 201)
         self.assertEqual(data['message'], 'Success')
         self.assertEqual(res.status_code, 201)
-    
+
     def test_register_user_email_exists(self):
         """ Tests that a user is not created twice with same email """
 
@@ -36,7 +36,8 @@ class TestUsers(Base):
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
-        self.assertEqual(data['error'], 'A User with that email already exists')
+        self.assertEqual(
+            data['error'], 'A User with that email already exists')
         self.assertEqual(res.status_code, 400)
 
     def test_register_user_missing_fields(self):
@@ -69,7 +70,8 @@ class TestUsers(Base):
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
-        self.assertEqual(data['error'], 'Integer types are not allowed for some fields')
+        self.assertEqual(
+            data['error'], 'Integer types are not allowed for some fields')
         self.assertEqual(res.status_code, 400)
 
     def test_register_user_string_bool(self):
@@ -80,5 +82,6 @@ class TestUsers(Base):
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
-        self.assertEqual(data['error'], 'isAdmin is supposed to be a boolean value')
+        self.assertEqual(
+            data['error'], 'isAdmin is supposed to be a boolean value')
         self.assertEqual(res.status_code, 400)

@@ -11,7 +11,6 @@ from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
 
 
-
 @bp.route('/offices/register', methods=['POST'])
 @jwt_required
 def post_candidate():

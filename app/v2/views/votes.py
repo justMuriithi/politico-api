@@ -10,7 +10,6 @@ from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
 
 
-
 @bp.route('/votes', methods=['POST', 'GET'])
 @jwt_required
 def vote():
