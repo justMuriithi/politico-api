@@ -7,8 +7,6 @@ from app.v2.models.user_model import User
 from app.v2.blueprints import bp
 
 
-users = User.users
-
 
 @bp.route('/auth/signup', methods=['POST'])
 def register_user():
@@ -35,5 +33,10 @@ def register_user():
 
     user.save()
 
+    response_data = {
+        'token': user.access_token,
+        'user': user.as_json()
+    }
+
     # return registered user
-    return response("Success", 201, [user.as_json()])
+    return response("Success", 201, [response_data])

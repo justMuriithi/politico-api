@@ -9,14 +9,23 @@ from .user_model import User
 class Candidate(BaseModel):
     """ model for political candidate """
 
-    candidates = []
-
-    def __init__(self, party=None, office=None, candidate=None):
-        super().__init__('Candidate', self.candidates)
+    def __init__(self, party=None, office=None, candidate=None, id=None):
+        super().__init__('Candidate', 'candidates')
 
         self.party = party
         self.office = office
         self.candidate = candidate
+        self.id = id
+
+    def save(self):
+        """save candidate to db """
+
+        data = super().save(
+            'party, office, candidate', self.party, self.office,
+            self.candidate)
+
+        self.id = data.get('id')
+        return data
 
     def as_json(self):
         # get the object as a json
@@ -40,22 +49,22 @@ class Candidate(BaseModel):
             self.error_code = 400
             return False
 
-        if exists('candidate', self.candidate, self.table):
+        if self.find_by('candidate', self.candidate):
             self.error_message = "{} already exists".format(self.object_name)
-            self.error_code = 400
+            self.error_code = 409
             return False
 
-        if not exists('id', self.office, Office.offices):
+        if not Office().find_by('id', self.office):
             self.error_message = 'Selected Office does not exist'
             self.error_code = 404
             return False
 
-        if not exists('id', self.party, Party.parties):
+        if not Party().find_by('id', self.party):
             self.error_message = 'Selected Party does not exist'
             self.error_code = 404
             return False
 
-        if not exists('id', self.candidate, User.users):
+        if not User().find_by('id', self.candidate):
             self.error_message = 'Selected User does not exist'
             self.error_code = 404
             return False

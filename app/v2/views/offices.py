@@ -4,8 +4,6 @@ from app.v2.models.offices_model import Office
 from app.v2.blueprints import bp
 
 
-offices = Office.offices
-
 
 @bp.route('/offices', methods=['POST', 'GET'])
 def create_office():
@@ -36,15 +34,15 @@ def create_office():
 
     elif request.method == 'GET':
         """ Get all offices end point """
-
-        return response('Request was successful', 200, offices)
+        model = Office()
+        return response('Success', 200, model.load_all())
 
 
 @bp.route('/offices/<int:id>', methods=['GET', 'DELETE'])
 def get_office(id):
 
     model = Office()
-    data = model.find_by_id(id)
+    data = model.find_by('id', id)
 
     if not data:
         return response('Office not found', 404)
@@ -53,6 +51,6 @@ def get_office(id):
         return response('Request was successful', 200, [data])
     else:
         office = model.from_json(data)
-        office.delete()
+        office.delete(office.id)
         return response(
             '{} deleted successfully'.format(office.name), 200, [data])

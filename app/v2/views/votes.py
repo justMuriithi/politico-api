@@ -7,12 +7,12 @@ from app.v2.models.user_model import User
 from app.v2.models.vote_model import Vote
 from app.v2.util.validate import response, exists, response_error
 from app.v2.blueprints import bp
+from flask_jwt_extended import (jwt_required)
 
-
-votes = Vote.votes
 
 
 @bp.route('/votes', methods=['POST', 'GET'])
+@jwt_required
 def vote():
     if request.method == 'POST':
         """ Create vote end point """
@@ -34,9 +34,9 @@ def vote():
         if not vote.validate_object():
             return response_error(vote.error_message, vote.error_code)
 
-        if not exists('id', office, Office.offices):
+        if not Office().find_by('id', office):
             return response_error('Selected Office does not exist', 404)
-        if not exists('id', candidate, User.users):
+        if not User().find_by('id', candidate):
             return response_error('Selected User does not exist', 404)
 
         vote.save()
@@ -47,24 +47,26 @@ def vote():
     elif request.method == 'GET':
         """ Get all votes end point """
 
-        return response('Success', 200, votes)
+        return response('Success', 200, Vote().load_all())
 
 
 @bp.route('/votes/candidate/<int:id>', methods=['GET'])
+@jwt_required
 def get_candidate_votes(id):
     """ Gets all votes for a specific candidate """
 
-    obtained = [vote for vote in votes if vote['candidate'] == id]
+    obtained = [Vote().find_all_by('candidate', id)]
 
     return vote_response(
         'Success', 200, len(obtained), obtained)
 
 
 @bp.route('/offices/<int:id>/result', methods=['GET'])
+@jwt_required
 def get_office_votes(id):
     """ Gets all votes for a specific office """
 
-    obtained = [vote for vote in votes if vote['office'] == id]
+    obtained = [Vote().find_all_by('office', id)]
 
     return vote_response(
         'Success', 200, len(obtained), obtained)

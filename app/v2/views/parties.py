@@ -1,14 +1,13 @@
 from flask import Blueprint, request, jsonify, make_response
-from app.v2.models.db import Database
 from app.v2.models.parties_model import Party
 from app.v2.util.validate import response, exists
 from app.v2.blueprints import bp
+from flask_jwt_extended import (jwt_required)
 
-
-parties = Party.parties
 
 
 @bp.route('/parties', methods=['POST', 'GET'])
+@jwt_required
 def create_party():
     if request.method == 'POST':
         """ Create party end point """
@@ -29,7 +28,6 @@ def create_party():
         if not party.validate_object():
             return response(party.error_message, party.error_code)
 
-        # append new party to list
         party.save()
 
         # return added party
@@ -37,15 +35,16 @@ def create_party():
 
     elif request.method == 'GET':
         """ Get all parties end point """
-
-        return response('Request was successful', 200, parties)
+        model = Party()
+        return response('Success', 200, model.load_all())
 
 
 @bp.route('/parties/<int:id>', methods=['GET', 'DELETE'])
+@jwt_required
 def get_party(id):
 
     model = Party()
-    data = model.find_by_id(id)
+    data = model.find_by('id', id)
 
     if not data:
         return response('Party not found', 404)
@@ -54,16 +53,17 @@ def get_party(id):
         return response('Request was successful', 200, [data])
     else:
         party = model.from_json(data)
-        party.delete()
+        party.delete(party.id)
         return response(
             '{} deleted successfully'.format(party.name), 200, [data])
 
 
 @bp.route('/parties/<int:id>/<string:name>', methods=['PATCH'])
+@jwt_required
 def edit_party(id, name):
 
     model = Party()
-    data = model.find_by_id(id)
+    data = model.find_by('id', id)
 
     if not data:
         return response('Party not found', 404)
