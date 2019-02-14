@@ -6,13 +6,12 @@ from .base_model import BaseModel
 class Party(BaseModel):
     """ model for political party """
 
-    parties = []
-
-    def __init__(self, name=None, hqAddress=None):
-        super().__init__('Party', self.parties)
+    def __init__(self, name=None, hqAddress=None, id=None):
+        super().__init__('Party', 'parties')
 
         self.name = name
         self.hqAddress = hqAddress
+        self.id = id
 
     def as_json(self):
         # get the object as a json
@@ -22,6 +21,14 @@ class Party(BaseModel):
             "hqAddress": self.hqAddress
         }
 
+    def save(self):
+        """save party to db  """
+
+        data = super().save('name, hqAddress', self.name, self.hqAddress)
+
+        self.id = data.get('id')
+        return data
+
     def from_json(self, json):
         self.__init__(json['name'], json['hqAddress'])
         self.id = json['id']
@@ -30,24 +37,19 @@ class Party(BaseModel):
     def edit(self, new_name):
         """ Edit party name """
         self.name = new_name
-        for i in range(len(self.parties)):
-            if self.parties[i]['id'] == self.id:
-                party = self.parties[i]
-                party['name'] = new_name
-                self.parties[i] = party
-                break
+        return super().edit('name', new_name, self.id)
 
     def validate_object(self):
         """ validates the object """
 
         if not validate_strings(self.name, self.hqAddress):
-            self.error_message = "Integer types are not allowed for this field"
+            self.error_message = "Integer types are not allowed for some fields"
             self.error_code = 400
             return False
 
-        if exists('name', self.name, self.parties):
+        if self.find_by('name', self.name):
             self.error_message = "{} already exists".format(self.object_name)
-            self.error_code = 400
+            self.error_code = 409
             return False
 
         return super().validate_object()

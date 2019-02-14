@@ -6,13 +6,20 @@ from .base_model import BaseModel
 class Office(BaseModel):
     """ model for political office """
 
-    offices = []
-
-    def __init__(self, name=None, category=None):
-        super().__init__('Office', self.offices)
+    def __init__(self, name=None, category=None, id=None):
+        super().__init__('Office', 'offices')
 
         self.name = name
         self.category = category
+        self.id = id
+
+    def save(self):
+        """save office to db """
+
+        data = super().save('name, category', self.name, self.category)
+
+        self.id = data.get('id')
+        return data
 
     def as_json(self):
         # get the object as a json
@@ -27,27 +34,20 @@ class Office(BaseModel):
         self.id = json['id']
         return self
 
-    def edit(self, new_name):
-        """ Edit office name """
-        self.name = new_name
-        for i in range(len(self.table)):
-            if self.table[i]['id'] == self.id:
-                office = self.table[i]
-                office['name'] = new_name
-                self.table[i] = office
-                break
-
     def validate_object(self):
         """ validates the object """
 
         if not validate_strings(self.name, self.category):
-            self.error_message = "Integer types are not allowed for this field"
-            self.error_code = 400
+            self.error_message = (
+                "Integer types are not allowed for some"
+                " fields")
+            self.error_code = 422
             return False
 
-        if exists('name', self.name, self.table):
+
+        if self.find_by('name', self.name):
             self.error_message = "{} already exists".format(self.object_name)
-            self.error_code = 400
+            self.error_code = 409
             return False
 
         return super().validate_object()

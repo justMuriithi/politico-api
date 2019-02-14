@@ -8,12 +8,12 @@ from app.v2.models.offices_model import Office
 from app.v2.models.user_model import User
 from app.v2.models.candidates_model import Candidate
 from app.v2.blueprints import bp
+from flask_jwt_extended import (jwt_required)
 
 
-candidates = Candidate.candidates
 
-
-@bp.route('/offices/register', methods=['POST', 'GET'])
+@bp.route('/offices/register', methods=['POST'])
+@jwt_required
 def post_candidate():
     message = 'Success'
     status = 200
@@ -51,21 +51,27 @@ def post_candidate():
             message = "No data was provided"
             status = 400
 
-    elif request.method == 'GET':
-        """ Get all candidates end point """
-        response_data = candidates
-        error = False
-
     if error:
         return response_error(message, status)
     else:
         return response(message, status, response_data)
 
+
+@bp.route('/candidates', methods=['GET'])
+@jwt_required
+def get_candidates():
+    """ Get all candidates end point """
+
+    return response('Success', 200, Candidate().load_all())
+
+
 @bp.route('/candidates/<int:id>', methods=['GET'])
+@jwt_required
 def get_candidate(id):
+    """ Get single candidate end point """
 
     model = Candidate()
-    data = model.find_by_id(id)
+    data = model.find_by('id', id)
 
     if not data:
         return response_error('Candidate not found', 404)

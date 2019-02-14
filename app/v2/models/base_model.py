@@ -1,48 +1,79 @@
 from app.v2.util.validate import generate_id, exists, validate_ints
+from app.v2.db.database_config import Database
 
 
-class BaseModel():
+class BaseModel(Database):
     """ model that defines all models """
 
-    def __init__(self, object_name, table):
-        self.table = table
+    def __init__(self, object_name, table_name):
+        self.table_name = table_name
         self.object_name = object_name
         self.error_message = ""
         self.error_code = 200
-        self.id = generate_id(table)
 
     def as_json(self):
-        return {}
+        pass
 
-    def save(self):
+    def params_to_values(self, params):
+        f = ["'{}'".format(i) for i in params]
+        return ", ".join(f)
+
+    def save(self, fields, *values):
         """ save the object to table """
-        self.table.append(self.as_json())
 
-    def delete(self):
-        """ Remove item from list and return instance """
-        for i in range(len(self.table)):
-            if self.table[i]['id'] == self.id:
-                return self.table.pop(i)
+        query = "INSERT INTO {} ({}) \
+        VALUES ({}) RETURNING *".format(
+            self.table_name, fields, self.params_to_values(values)
+        )
+        print(query)
+        return super().insert(query)
+
+    def edit(self, key, value, id):
+        """ edits a certain column of a table """
+
+        query = "UPDATE {} SET {} = '{}' WHERE id = '{}' \
+            RETURNING *".format(self.table_name, key, value, id)
+
+        return self.insert(query)
+
+    def load_all(self):
+        """  Get all items in table """
+
+        query = "SELECT * FROM {}".format(self.table_name)
+
+        return self.get_all(query)
+
+    def delete(self, id):
+        """ Remove item from table """
+
+        query = "DELETE FROM {} WHERE id = {}".format(self.table_name, id)
+
+        self.execute(query)
 
     def validate_object(self):
         """This function validates an object and rejects or accepts it"""
 
-        item = self.as_json()
-        for key, value in item.items():
-            if not value:
-                self.error_message = "Please provide a {} for the {}".format(key, self.object_name)
-                self.error_code = 400
-                return False
         return True
 
-    def find_by_id(self, id):
-        """ Find object from list and return instance """
-        self.id = id
+    def find_by(self, key, value):
+        """ Find object from table and return """
 
-        for i in range(len(self.table)):
-            if self.table[i]['id'] == id:
-                return self.table[i]
-        return None
+        query = "SELECT * FROM {} WHERE {} = '{}'".format(
+            self.table_name, key, value)
+
+        data = self.get_one(query)
+        if data:
+            data[key] = value
+        return data
+
+    def find_all_by(self, key, value):
+        """ Find objects from table and return """
+
+        query = "SELECT * FROM {} WHERE {} = '{}'".format(
+            self.table_name, key, value)
+
+        data = self.get_all(query)
+        return data
 
     def from_json(self, json):
         return self
