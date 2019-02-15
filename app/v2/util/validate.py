@@ -5,7 +5,7 @@ from app.v2.models.user_model import User
 def not_admin():
     current_user = User().find_by('id', get_jwt_identity())
 
-    if not current_user['is_admin']:
+    if not current_user['admin']:
         return response_error(
             "This action is reserved to Admins only", 401)
     return None
