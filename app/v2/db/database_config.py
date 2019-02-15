@@ -55,7 +55,7 @@ class Database:
 
         if not user:
             cur.execute("INSERT INTO users (firstname, lastname, national_id, email, \
-                password, is_admin) VALUES ('Tony', 'Warui', '5549260', \
+                password, admin) VALUES ('Tony', 'Warui', '5549260', \
                 'antoineshephmaina@gmail.com', '{}', True)\
             ".format(generate_password_hash('nimimi')))
             conn.commit()
@@ -106,7 +106,7 @@ table_queries = [
         national_id VARCHAR(250) NOT NULL,
         email VARCHAR(250) NOT NULL,
         password VARCHAR(250) NOT NULL,
-        is_admin BOOLEAN NOT NULL DEFAULT FALSE,
+        admin BOOLEAN NOT NULL DEFAULT FALSE,
         UNIQUE(email)
     )
     """,

@@ -1,6 +1,6 @@
 from app import create_app
 import unittest
-from app.v2.models.db import Database
+from app.v2.db.database_config import Database
 from app.v2.models.parties_model import Party
 from app.v2.models.offices_model import Office
 

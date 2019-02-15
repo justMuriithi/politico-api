@@ -1,5 +1,5 @@
-
 from .base_model import BaseModel
+from app.version1.util.validate import validate_strings, validate_bool
 import datetime
 import jwt
 import re
@@ -13,7 +13,7 @@ class User(BaseModel):
     """ model for political party """
 
     def __init__(
-            self, first_name=None, last_name=None, national_id=None, email=None, is_admin=False,
+            self, first_name=None, last_name=None, national_id=None, email=None, admin=False,
             password=None, id=None):
 
         super().__init__('User', 'users')
@@ -22,7 +22,7 @@ class User(BaseModel):
         self.last_name = last_name
         self.national_id = national_id
         self.email = email
-        self.is_admin = is_admin
+        self.admin = admin
         self.password = password
         self.id = id
 
@@ -31,9 +31,9 @@ class User(BaseModel):
 
         data = super().save(
             'firstname, lastname, national_id, email, password \
-            ,is_admin', self.first_name, self.last_name,
+            ,admin', self.first_name, self.last_name,
             self.national_id, self.email,
-            generate_password_hash(self.password), self.is_admin)
+            generate_password_hash(self.password), self.admin)
 
         self.id = data.get('id')
         self.create_tokens()
@@ -51,13 +51,13 @@ class User(BaseModel):
             "lastname": self.last_name,
             "national_id": self.national_id,
             "email": self.email,
-            "is_admin": self.is_admin
+            "admin": self.admin
         }
 
     def from_json(self, json):
         self.__init__(
             json['firstname'], json['lastname'], json['national_id'],
-            json['email'], json['is_admin'])
+            json['email'], json['admin'])
         self.id = json['id']
         return self
 
@@ -72,8 +72,8 @@ class User(BaseModel):
             self.error_code = 422
             return False
 
-        if not validate_bool(self.is_admin):
-            self.error_message = "is_admin is supposed to be a boolean value"
+        if not validate_bool(self.admin):
+            self.error_message = "admin is supposed to be a boolean value"
             self.error_code = 422
             return False
 
