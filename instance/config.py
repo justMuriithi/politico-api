@@ -9,6 +9,9 @@ class Config(object):
 class DevelopmentConfig(Config):
     """Configurations for Development."""
     DEBUG = True
+    DATABASE_URL = os.getenv('DATABASE_URL')
+    SECRET = os.getenv('SECRET') 
+
 class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
     TESTING = True

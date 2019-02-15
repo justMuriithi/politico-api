@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, make_response
 from app.v2.models.parties_model import Party
-from app.v2.util.validate import response, exists
+from app.v2.util.validate import response, exists, not_admin
 from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
 
@@ -10,6 +10,10 @@ from flask_jwt_extended import (jwt_required)
 def create_party():
     if request.method == 'POST':
         """ Create party end point """
+
+        restricted = not_admin()
+        if restricted:
+            return restricted
 
         data = request.get_json()
 
@@ -51,6 +55,9 @@ def get_party(id):
     if request.method == 'GET':
         return response('Request was successful', 200, [data])
     else:
+        restricted = not_admin()
+        if restricted:
+            return restricted
         party = model.from_json(data)
         party.delete(party.id)
         return response(
@@ -60,6 +67,10 @@ def get_party(id):
 @bp.route('/parties/<int:id>/<string:name>', methods=['PATCH'])
 @jwt_required
 def edit_party(id, name):
+
+    restricted = not_admin()
+    if restricted:
+        return restricted
 
     model = Party()
     data = model.find_by('id', id)

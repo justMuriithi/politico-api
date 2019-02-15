@@ -1,4 +1,4 @@
-from app.v2.util.validate import validate_ints, validate_bool
+from app.v2.util.validate import validate_bool
 from app.v2.util.validate import validate_strings
 from .base_model import BaseModel
 import datetime
@@ -31,8 +31,8 @@ class User(BaseModel):
         """save user to db and generate tokens """
 
         data = super().save(
-            'firstname, lastname, national_id, email, password, \
-            admin', self.first_name, self.last_name,
+            'firstname, lastname, national_id, email, password \
+            ,is_admin', self.first_name, self.last_name,
             self.national_id, self.email,
             generate_password_hash(self.password), self.is_admin)
 

@@ -22,11 +22,12 @@ def register_user():
         last_name = data['lastname']
         national_id = data['national_id']
         email = data['email']
-        is_admin = data['isAdmin']
+        password = data['password']
+        is_admin = data['is_admin']
     except KeyError as e:
         return response_error("{} field is required".format(e.args[0]), 400)
 
-    user = User(first_name, last_name, national_id, email, is_admin)
+    user = User(first_name, last_name, national_id, email, password, is_admin)
 
     if not user.validate_object():
         return response_error(user.error_message, user.error_code)
