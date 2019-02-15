@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import request
 from flask import jsonify
 from flask import make_response
-from app.v2.util.validate import response, exists, response_error
+from app.v2.util.validate import response, exists, response_error, not_admin
 from app.v2.models.parties_model import Party
 from app.v2.models.offices_model import Office
 from app.v2.models.user_model import User
@@ -18,37 +18,41 @@ def post_candidate():
     status = 200
     response_data = []
     error = True
-    if request.method == 'POST':
-        """ Create candidate end point """
 
-        data = request.get_json()
+    restricted = not_admin()
+    if restricted:
+        return restricted
 
-        if data:
-            try:
-                office = data['office']
-                party = data['party']
-                candidate = data['candidate']
+    """ Create candidate end point """
 
-                item = Candidate(party, office, candidate)
+    data = request.get_json()
 
-                if item.validate_object():
-                    item.save()
+    if data:
+        try:
+            office = data['office']
+            party = data['party']
+            candidate = data['candidate']
 
-                    # return added candidate
-                    message = "Success"
-                    response_data = [item.as_json()]
-                    status = 201
-                    error = False
-                else:
-                    message = item.error_message
-                    status = item.error_code
+            item = Candidate(party, office, candidate)
 
-            except KeyError as e:
-                message = "{} field is required".format(e.args[0])
-                status = 400
-        else:
-            message = "No data was provided"
+            if item.validate_object():
+                item.save()
+
+                # return added candidate
+                message = "Success"
+                response_data = [item.as_json()]
+                status = 201
+                error = False
+            else:
+                message = item.error_message
+                status = item.error_code
+
+        except KeyError as e:
+            message = "{} field is required".format(e.args[0])
             status = 400
+    else:
+        message = "No data was provided"
+        status = 400
 
     if error:
         return response_error(message, status)

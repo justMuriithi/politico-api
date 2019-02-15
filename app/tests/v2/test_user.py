@@ -11,7 +11,7 @@ class TestUsers(Base):
             "lastname": "Maina",
             "national_id": 5549260,
             "email": "Tony@demo.com",
-            "isAdmin": True
+            "is_admin": True
         }
 
     # clear all lists after tests
@@ -75,13 +75,13 @@ class TestUsers(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_register_user_string_bool(self):
-        """ Tests when bool is not provided for isAdmin """
+        """ Tests when bool is not provided for is_admin """
 
-        self.user['isAdmin'] = "true"
+        self.user['is_admin'] = "true"
         res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 400)
+        self.assertEqual(data['status'], 422)
         self.assertEqual(
-            data['error'], 'isAdmin is supposed to be a boolean value')
-        self.assertEqual(res.status_code, 400)
+            data['error'], 'is_admin is supposed to be a boolean value')
+        self.assertEqual(res.status_code, 422)
