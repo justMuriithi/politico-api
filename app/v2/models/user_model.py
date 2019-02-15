@@ -1,5 +1,4 @@
-from app.v2.util.validate import validate_bool
-from app.v2.util.validate import validate_strings
+
 from .base_model import BaseModel
 import datetime
 import jwt
