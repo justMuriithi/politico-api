@@ -11,7 +11,7 @@ class TestUsers(Base):
             "lastname": "Maina",
             "national_id": "5549260",
             "email": "antoineshephmaina@gmail.com",
-            "is_admin": True,
+            "admin": True,
             "password":"nimimi"
         }
 
@@ -38,10 +38,10 @@ class TestUsers(Base):
         res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 400)
+        self.assertEqual(data['status'], 422)
         self.assertEqual(
             data['error'], 'A User with that email already exists')
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 422)
 
     def test_register_user_missing_fields(self):
         """ Tests when some fields are missing e.g firstname """
@@ -72,24 +72,24 @@ class TestUsers(Base):
         res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 400)
+        self.assertEqual(data['status'], 422)
         self.assertEqual(
             data['error'], 'Integer types are not allowed for some fields')
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 422)
 
     def test_register_user_string_bool(self):
-        """ Tests when bool is not provided for is_admin """
+        """ Tests when bool is not provided for admin """
 
-        self.user['is_admin'] = "true"
+        self.user['admin'] = "true"
         res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
         self.assertEqual(data['status'], 422)
         self.assertEqual(
-            data['error'], 'is_admin is supposed to be a boolean value')
+            data['error'], 'admin is supposed to be a boolean value')
         self.assertEqual(res.status_code, 422)
 
-    def test_register_user_ivalid_email(self):
+    def test_register_user_invalid_email(self):
         """ Tests when invalid email is provided """
 
         self.user['email'] = 'check'

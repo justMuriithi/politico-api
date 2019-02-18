@@ -100,7 +100,7 @@ class TestVote(Base):
         data = res.get_json()
 
         self.assertEqual(data['status'], 404)
-        self.assertEqual(data['error'], 'Selected Candidate does not exist')
+        self.assertEqual(data['error'], 'Selected User does not exist')
         self.assertEqual(res.status_code, 404)
 
     def test_vote_twice(self):
@@ -110,9 +110,9 @@ class TestVote(Base):
         res = self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 400)
+        self.assertEqual(data['status'], 409)
         self.assertEqual(data['error'], 'You can only vote once per office')
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
     # tests for GET votes
     def test_get_all_votes(self):
@@ -137,7 +137,7 @@ class TestVote(Base):
 
     def test_get_all_user_votes(self):
         self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
-        res = self.client.get('/api/v2/votes/user/1', headers=self.headers)
+        res = self.client.get('/api/v2/votes/candidate/1', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -147,7 +147,7 @@ class TestVote(Base):
 
     def test_get_all_office_votes(self):
         self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
-        res = self.client.get('/api/v2/votes/office/1', headers=self.headers)
+        res = self.client.get('/api/v2/offices/1/result', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)

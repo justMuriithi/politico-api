@@ -2,13 +2,13 @@ from flask import Blueprint, request, jsonify, make_response
 from app.version1.models.db import Database
 from app.version1.models.parties_model import Party
 from app.version1.util.validate import response, exists
-from app.version1.blueprints import bp
+from app.version1.blueprints import o_bp
 
 
 parties = Party.parties
 
 
-@bp.route('/parties', methods=['POST', 'GET'])
+@o_bp.route('/parties', methods=['POST', 'GET'])
 def create_party():
     if request.method == 'POST':
         """ Create party end point """
@@ -41,7 +41,7 @@ def create_party():
         return response('Request was successful', 200, parties)
 
 
-@bp.route('/parties/<int:id>', methods=['GET', 'DELETE'])
+@o_bp.route('/parties/<int:id>', methods=['GET', 'DELETE'])
 def get_party(id):
 
     model = Party()
@@ -59,7 +59,7 @@ def get_party(id):
             '{} deleted successfully'.format(party.name), 200, [data])
 
 
-@bp.route('/parties/<int:id>/<string:name>', methods=['PATCH'])
+@o_bp.route('/parties/<int:id>/<string:name>', methods=['PATCH'])
 def edit_party(id, name):
 
     model = Party()

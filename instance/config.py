@@ -15,7 +15,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
     TESTING = True
-    DATABASE_URI = 'testing URL for the test DB'
+    DATABASE_URL = os.getenv('DATABASE_URL')
     DEBUG = True
 class StagingConfig(Config):
     """Configurations for Staging."""
