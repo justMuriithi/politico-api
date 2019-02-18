@@ -1,13 +1,10 @@
 from base_test import Base
-from app.v2.models.db import Database
 
 
 class TestParty(Base):
 
     def setUp(self):
         super().setUp()
-
-        self.parties = Database().get_table(Database.PARTIES)
 
         self.party = {
             "name": "Kanu",
@@ -19,7 +16,7 @@ class TestParty(Base):
         super().tearDown()
 
     def test_create_party(self):
-        res = self.client.post('/api/v2/parties', json=self.party)
+        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
@@ -28,8 +25,8 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 201)
 
     def test_create_party_name_exists(self):
-        res = self.client.post('/api/v2/parties', json=self.party)
-        res = self.client.post('/api/v2/parties', json=self.party)
+        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -39,7 +36,7 @@ class TestParty(Base):
     def test_create_party_missing_fields(self):
         res = self.client.post('/api/v2/parties', json={
             "hqAddress": "Eldoret"
-        })
+        }, headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -47,7 +44,7 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_create_party_no_data(self):
-        res = self.client.post('/api/v2/parties')
+        res = self.client.post('/api/v2/parties', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -55,11 +52,11 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_get_parties(self):
-        res = self.client.post('/api/v2/parties', json=self.party)
+        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
         self.party['name'] = 'One name'
-        res = self.client.post('/api/v2/parties', json=self.party)
+        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
         self.party['name'] = 'Another name'
-        res = self.client.get('/api/v2/parties')
+        res = self.client.get('/api/v2/parties', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -68,7 +65,7 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_parties_no_data(self):
-        res = self.client.get('/api/v2/parties')
+        res = self.client.get('/api/v2/parties', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -77,9 +74,9 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_party(self):
-        self.client.post('/api/v2/parties', json=self.party)
+        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
 
-        res = self.client.get('/api/v2/parties/1')
+        res = self.client.get('/api/v2/parties/1', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -89,7 +86,7 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_party_id_not_found(self):
-        res = self.client.get('/api/v2/parties/35')
+        res = self.client.get('/api/v2/parties/35', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 404)
@@ -98,7 +95,7 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 404)
 
     def test_edit_party(self):
-        self.client.post('/api/v2/parties', json=self.party)
+        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
 
         res = self.client.patch('/api/v2/parties/1/PNU')
         data = res.get_json()
@@ -111,7 +108,7 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_edit_party_id_not_found(self):
-        res = self.client.get('/api/v2/parties/35')
+        res = self.client.get('/api/v2/parties/35', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 404)
@@ -120,7 +117,7 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 404)
 
     def test_delete_party(self):
-        self.client.post('/api/v2/parties', json=self.party)
+        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
 
         res = self.client.delete('/api/v2/parties/1')
         data = res.get_json()
@@ -132,7 +129,7 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_delete_party_id_not_found(self):
-        res = self.client.get('/api/v2/parties/35')
+        res = self.client.get('/api/v2/parties/35', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 404)

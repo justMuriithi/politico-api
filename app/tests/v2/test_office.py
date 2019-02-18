@@ -1,13 +1,10 @@
 from base_test import Base
-from app.v2.models.db import Database
 
 
 class TestOffice(Base):
 
     def setUp(self):
         super().setUp()
-
-        self.offices = Database().get_table(Database.OFFICES)
 
         self.office = {
             "category": "National",
