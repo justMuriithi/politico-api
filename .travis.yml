@@ -5,8 +5,15 @@ python:
 install:
   - pip install -r requirements.txt  
 
-before script:
+services:
+  - postgresql
+
+before_script:
   - export APP_SETTINGS="testing"
+  - export SECRET="SECRET"
+  - psql -c "CREATE DATABASE politico;" -U postgres
+  - psql -c "ALTER user postgres PASSWORD 'voter';" -U postgres
+  - export DATABASE_URL="dbname='politico' user='postgres' host='127.0.0.1' password='voter'"
 
 script:
   - pytest --cov=app

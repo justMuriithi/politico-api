@@ -17,6 +17,8 @@ class TestingConfig(Config):
     TESTING = True
     DATABASE_URL = os.getenv('DATABASE_URL')
     DEBUG = True
+    SECRET = os.getenv('SECRET') 
+
 class StagingConfig(Config):
     """Configurations for Staging."""
     DEBUG = True
