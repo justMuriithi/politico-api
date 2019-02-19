@@ -32,8 +32,8 @@ def create_office():
         office.save()
 
         # return added office
-        return response("Your political office was created \
-            successfully", 201, [office.as_json()])
+        return response("Your political office was created successfully",
+                        201, [office.as_json()])
 
     elif request.method == 'GET':
         """ Get all offices end point """

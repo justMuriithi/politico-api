@@ -32,8 +32,8 @@ def create_party():
         party.save()
 
         # return added party
-        return response("Your political party was created \
-            successfully", 201, [party.as_json()])
+        return response("Your political party was created successfully",
+                        201, [party.as_json()])
 
     elif request.method == 'GET':
         """ Get all parties end point """

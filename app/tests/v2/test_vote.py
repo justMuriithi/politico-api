@@ -66,7 +66,8 @@ class TestVote(Base):
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
-        self.assertEqual(data['error'], 'office field is required')
+        self.assertEqual(data['error'], 'office field is \
+            required')
         self.assertEqual(res.status_code, 400)
 
     def test_vote_no_data(self):
