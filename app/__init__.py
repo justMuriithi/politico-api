@@ -7,13 +7,9 @@ from .version1.blueprints import o_bp
 from .v2.db.database_config import Database
 from flask_jwt_extended import JWTManager
 
-"""importing the configurations from the .config file \
-    which is in the instance folder"""
-
 
 def create_app(config_name):
-    '''creating the app using the configurations in the \
-        dictionary created in the .config file'''
+    '''creating the app using the configurations in the .config file'''
 
     # to allow for heroku devployment
     is_prod = os.environ.get('IS_HEROKU', None)
