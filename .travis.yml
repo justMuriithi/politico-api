@@ -7,6 +7,7 @@ install:
 
 before script:
   - export APP_SETTINGS="testing"
+  - export DATABASE_URL="dbname='politico' user='voter' host='127.0.0.1' password='voter'"
 
 script:
   - pytest --cov=app
