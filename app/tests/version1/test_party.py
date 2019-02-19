@@ -1,4 +1,4 @@
-from base_test import Base
+from .base_test import Base
 from app.version1.models.db import Database
 
 

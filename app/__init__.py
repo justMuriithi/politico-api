@@ -3,7 +3,9 @@ import os
 from flask import Flask, jsonify
 from instance.config import app_config
 from .v2.views import offices, parties, users, votes, candidates
+from .version1.views import offices, parties
 from .v2.blueprints import bp
+from .version1.blueprints import o_bp
 from .v2.db.database_config import Database
 from flask_jwt_extended import JWTManager
 
@@ -27,6 +29,7 @@ def create_app(config_name):
 
     app.secret_key = os.getenv("SECRET")
 
+    app.register_blueprint(o_bp)
     app.register_blueprint(bp)
 
     jwt = JWTManager(app)

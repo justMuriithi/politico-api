@@ -1,4 +1,4 @@
-from app.tests.version1.base_test import Base
+from .base_test import Base
 
 
 class TestVote(Base):
@@ -27,14 +27,14 @@ class TestVote(Base):
             "firstname": "Tony",
             "lastname": "Maina",
             "national_id": "5549260",
-            "email": "Tony@demo.com",
+            "email": "antoineshephmaina@gmail.com",
             "isAdmin": True
         }
-        self.client.post('/api/version1/offices', json=self.office)
-        self.client.post('/api/version1/parties', json=self.party)
-        self.client.post('/api/version1/auth/login', json=self.user)
+        self.client.post('/api/v2/offices', json=self.office, headers=self.headers)
+        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        self.client.post('/api/v2/auth/login', json=self.user, headers=self.headers)
         self.client.post(
-            '/api/version1/offices/office-id/register', json=self.candidate)
+            '/api/v2/offices/register', json=self.candidate, headers=self.headers)
 
     # clear all lists after tests
     def tearDown(self):
@@ -45,7 +45,7 @@ class TestVote(Base):
     def test_vote(self):
         """ Tests that a vote was created successfully """
 
-        res = self.client.post('/api/version1/votes', json=self.vote)
+        res = self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
@@ -55,10 +55,10 @@ class TestVote(Base):
     def test_vote_missing_fields(self):
         """ Tests when some fields are missing e.g office """
 
-        res = self.client.post('/api/version1/votes', json={
+        res = self.client.post('/api/v2/votes', json={
             "candidate": 1,
             "createdBy": 1
-        })
+        }, headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -68,29 +68,57 @@ class TestVote(Base):
     def test_vote_no_data(self):
         """ Tests when no data is provided """
 
-        res = self.client.post('/api/version1/votes')
+        res = self.client.post('/api/v2/votes', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
         self.assertEqual(data['error'], 'No data was provided')
         self.assertEqual(res.status_code, 400)
 
+    def test_create_vote_office_not_exist(self):
+        """ Tests when the office does not exist  """
+
+        res = self.client.post('/api/v2/votes', json={
+            "office": 34,
+            "createdBy": 1,
+            "candidate": 1
+        }, headers=self.headers)
+        data = res.get_json()
+
+        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['error'], 'Selected Office does not exist')
+        self.assertEqual(res.status_code, 404)
+
+    def test_create_vote_candidate_not_exist(self):
+        """ Tests when the user does not exist  """
+
+        res = self.client.post('/api/v2/votes', json={
+            "createdBy": 1,
+            "office": 1,
+            "candidate": 62
+        }, headers=self.headers)
+        data = res.get_json()
+
+        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['error'], 'Selected User does not exist')
+        self.assertEqual(res.status_code, 404)
+
     def test_vote_twice(self):
         """ Tests when user attempts to vote twice for same office """
 
-        self.client.post('/api/version1/votes', json=self.vote)
-        res = self.client.post('/api/version1/votes', json=self.vote)
+        self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
+        res = self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 400)
+        self.assertEqual(data['status'], 409)
         self.assertEqual(data['error'], 'You can only vote once per office')
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
     # tests for GET votes
     def test_get_all_votes(self):
-        res = self.client.post('/api/version1/votes', json=self.vote)
+        res = self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
 
-        res = self.client.get('/api/version1/votes')
+        res = self.client.get('/api/v2/votes', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -99,7 +127,7 @@ class TestVote(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_all_votes_no_data(self):
-        res = self.client.get('/api/version1/votes')
+        res = self.client.get('/api/v2/votes', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -108,8 +136,8 @@ class TestVote(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_all_user_votes(self):
-        self.client.post('/api/version1/votes', json=self.vote)
-        res = self.client.get('/api/version1/votes/user/1')
+        self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
+        res = self.client.get('/api/v2/votes/candidate/1', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -118,8 +146,8 @@ class TestVote(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_all_office_votes(self):
-        self.client.post('/api/version1/votes', json=self.vote)
-        res = self.client.get('/api/version1/votes/office/1')
+        self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
+        res = self.client.get('/api/v2/offices/1/result', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)

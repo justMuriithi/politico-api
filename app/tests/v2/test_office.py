@@ -1,13 +1,10 @@
-from base_test import Base
-from app.v2.models.db import Database
+from .base_test import Base
 
 
 class TestOffice(Base):
 
     def setUp(self):
         super().setUp()
-
-        self.offices = Database().get_table(Database.OFFICES)
 
         self.office = {
             "category": "National",
@@ -32,9 +29,9 @@ class TestOffice(Base):
         res = self.client.post('/api/v2/offices', json=self.office)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 400)
+        self.assertEqual(data['status'], 409)
         self.assertEqual(data['message'], 'Office already exists')
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
     def test_create_office_missing_fields(self):
         res = self.client.post('/api/v2/offices', json={
@@ -64,7 +61,7 @@ class TestOffice(Base):
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
-        self.assertEqual(data['message'], 'Request was successful')
+        self.assertEqual(data['message'], 'Success')
         self.assertEqual(len(data['data']), 2)
         self.assertEqual(res.status_code, 200)
 
@@ -73,7 +70,7 @@ class TestOffice(Base):
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
-        self.assertEqual(data['message'], 'Request was successful')
+        self.assertEqual(data['message'], 'Success')
         self.assertEqual(len(data['data']), 0)
         self.assertEqual(res.status_code, 200)
 

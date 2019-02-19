@@ -1,13 +1,13 @@
 from flask import Blueprint, request, jsonify, make_response
 from app.version1.util.validate import response, exists
 from app.version1.models.offices_model import Office
-from app.version1.blueprints import bp
+from app.version1.blueprints import o_bp
 
 
 offices = Office.offices
 
 
-@bp.route('/offices', methods=['POST', 'GET'])
+@o_bp.route('/offices', methods=['POST', 'GET'])
 def create_office():
     if request.method == 'POST':
         """ Create office end point """
@@ -40,7 +40,7 @@ def create_office():
         return response('Request was successful', 200, offices)
 
 
-@bp.route('/offices/<int:id>', methods=['GET', 'DELETE'])
+@o_bp.route('/offices/<int:id>', methods=['GET', 'DELETE'])
 def get_office(id):
 
     model = Office()

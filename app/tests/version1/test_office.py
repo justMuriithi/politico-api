@@ -1,13 +1,10 @@
-from base_test import Base
-from app.version1.models.db import Database
+from .base_test import Base
 
 
 class TestOffice(Base):
 
     def setUp(self):
         super().setUp()
-
-        self.offices = Database().get_table(Database.OFFICES)
 
         self.office = {
             "category": "National",
@@ -16,6 +13,7 @@ class TestOffice(Base):
     # clear all lists after tests
 
     def tearDown(self):
+        self.office['name'] = 'President'
         super().tearDown()
 
     def test_create_office(self):
