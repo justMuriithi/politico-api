@@ -40,6 +40,7 @@ Politico enables citizens give their mandate to politicians running for differen
 - [Postman](https://www.getpostman.com/downloads/)
 - Code editor of choice preferrably VSCode or Sublime
 
+
 #### Installation steps
 - Clone the git repo
 ```
@@ -61,6 +62,13 @@ $ source venv/bin/activate
 ```
 $ pip3 install -r requirements.txt
 ```
+- Environment Setup
+```
+  export FLASK_APP="run.py" 
+  export SECRET="SECRET"
+  export APP_SETTINGS="development"
+  export DATABASE_URL="dbname='politico' host='127.0.0.1' user='voter' password='voter'"
+
 - Run the app
 ``` 
 $ flask run 
