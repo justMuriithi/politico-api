@@ -5,6 +5,9 @@ python:
 install:
   - pip install -r requirements.txt  
 
+services:
+  - postgresql
+
 before script:
   - export APP_SETTINGS="testing"
   - export DATABASE_URL="dbname='politico' user='voter' host='127.0.0.1' password='voter'"
