@@ -1,11 +1,10 @@
-from flask import Blueprint
 from flask import request
 from flask import jsonify
 from flask import make_response
 from app.v2.models.offices_model import Office
 from app.v2.models.user_model import User
 from app.v2.models.vote_model import Vote
-from app.v2.util.validate import response, exists, response_error
+from app.v2.util.validate import response, response_error
 from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
 
@@ -26,7 +25,8 @@ def vote():
             office = data['office']
             candidate = data['candidate']
         except KeyError as e:
-            return response_error("{} field is required".format(e.args[0]), 400)
+            return response_error("{} field is \
+            required".format(e.args[0]), 400)
 
         vote = Vote(created_by, office, candidate)
 

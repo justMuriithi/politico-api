@@ -2,8 +2,6 @@ import psycopg2
 from instance.config import app_config
 from werkzeug.security import generate_password_hash
 from psycopg2.extras import RealDictCursor
-import sys
-import os
 
 
 class Database:
@@ -49,7 +47,8 @@ class Database:
     def create_super_user(self):
         """ creates a default user who is an admin """
 
-        query = "SELECT * FROM users WHERE email = 'antoineshephmaina@gmail.com'"
+        query = "SELECT * FROM users WHERE email = \
+            'antoineshephmaina@gmail.com'"
         cur.execute(query)
         user = cur.fetchone()
 
@@ -148,7 +147,8 @@ table_queries = [
         PRIMARY KEY (createdby, office),
         FOREIGN KEY (createdby) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (office) REFERENCES offices(id) ON DELETE CASCADE,
-        FOREIGN KEY (candidate) REFERENCES candidates(candidate) ON DELETE CASCADE
+        FOREIGN KEY (candidate) REFERENCES \
+            candidates(candidate) ON DELETE CASCADE
     )
     """
 ]

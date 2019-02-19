@@ -1,6 +1,7 @@
 from flask import make_response, jsonify
-from flask_jwt_extended import (jwt_required, get_jwt_identity)
+from flask_jwt_extended import get_jwt_identity
 from app.v2.models.user_model import User
+
 
 def not_admin():
     current_user = User().find_by('id', get_jwt_identity())
@@ -9,6 +10,7 @@ def not_admin():
         return response_error(
             "This action is reserved to Admins only", 401)
     return None
+
 
 def generate_id(list):
     """ Creates a unique ID for a new item to be added to the list"""

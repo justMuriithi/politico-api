@@ -2,24 +2,25 @@
 import os
 from flask import Flask, jsonify
 from instance.config import app_config
-from .v2.views import offices, parties, users, votes, candidates
-from .version1.views import offices, parties
 from .v2.blueprints import bp
 from .version1.blueprints import o_bp
 from .v2.db.database_config import Database
 from flask_jwt_extended import JWTManager
 
-"""importing the configurations from the .config file which is in the instance folder"""
+"""importing the configurations from the .config file \
+    which is in the instance folder"""
 
 
 def create_app(config_name):
-    '''creating the app using the configurations in the dictionary created in the .config file'''
+    '''creating the app using the configurations in the \
+        dictionary created in the .config file'''
 
     # to allow for heroku devployment
     is_prod = os.environ.get('IS_HEROKU', None)
     if is_prod:
         config_name = 'development'
-        os.environ["DATABASE_URL"] = "dbname='politico' host='127.0.0.1' user='voter' password='voter'"
+        os.environ["DATABASE_URL"] = "dbname='politico' host='127.0.0.1'\
+             user='voter' password='voter'"
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
@@ -32,8 +33,7 @@ def create_app(config_name):
     app.register_blueprint(o_bp)
     app.register_blueprint(bp)
 
-    jwt = JWTManager(app)
-
+    JWTManager(app)
 
     @app.errorhandler(404)
     def page_not_found(error):
@@ -53,9 +53,11 @@ def create_app(config_name):
     def bad_request(error):
         """ Handler for error 400 """
 
-        return jsonify({'status': 400, 'message': 'Please review your request and try again'})
+        return jsonify({'status': 400, 'message': 'Please review \
+            your request and try again'})
 
     return app
+
 
 def create_db(config_name):
     """ Create all db tables """

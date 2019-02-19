@@ -16,7 +16,8 @@ class TestParty(Base):
         super().tearDown()
 
     def test_create_party(self):
-        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        res = self.client.post('/api/v2/parties', json=self.party,
+                               headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
@@ -25,8 +26,10 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 201)
 
     def test_create_party_name_exists(self):
-        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
-        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        res = self.client.post('/api/v2/parties', json=self.party,
+                               headers=self.headers)
+        res = self.client.post('/api/v2/parties', json=self.party,
+                               headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 409)
@@ -52,9 +55,11 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_get_parties(self):
-        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        res = self.client.post('/api/v2/parties', json=self.party,
+                               headers=self.headers)
         self.party['name'] = 'One name'
-        res = self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        res = self.client.post('/api/v2/parties', json=self.party,
+                               headers=self.headers)
         self.party['name'] = 'Another name'
         res = self.client.get('/api/v2/parties', headers=self.headers)
         data = res.get_json()
@@ -74,9 +79,11 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_party(self):
-        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        self.client.post('/api/v2/parties', json=self.party,
+                         headers=self.headers)
 
-        res = self.client.get('/api/v2/parties/1', headers=self.headers)
+        res = self.client.get('/api/v2/parties/1',
+                              headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -95,7 +102,8 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 404)
 
     def test_edit_party(self):
-        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        self.client.post('/api/v2/parties', json=self.party,
+                         headers=self.headers)
 
         res = self.client.patch('/api/v2/parties/1/PNU', headers=self.headers)
         data = res.get_json()
@@ -117,7 +125,8 @@ class TestParty(Base):
         self.assertEqual(res.status_code, 404)
 
     def test_delete_party(self):
-        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
+        self.client.post('/api/v2/parties', json=self.party,
+                         headers=self.headers)
 
         res = self.client.delete('/api/v2/parties/1', headers=self.headers)
         data = res.get_json()

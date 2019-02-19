@@ -30,11 +30,14 @@ class TestVote(Base):
             "email": "antoineshephmaina@gmail.com",
             "isAdmin": True
         }
-        self.client.post('/api/v2/offices', json=self.office, headers=self.headers)
-        self.client.post('/api/v2/parties', json=self.party, headers=self.headers)
-        self.client.post('/api/v2/auth/login', json=self.user, headers=self.headers)
-        self.client.post(
-            '/api/v2/offices/register', json=self.candidate, headers=self.headers)
+        self.client.post('/api/v2/offices', json=self.office,
+                         headers=self.headers)
+        self.client.post('/api/v2/parties', json=self.party,
+                         headers=self.headers)
+        self.client.post('/api/v2/auth/login', json=self.user,
+                         headers=self.headers)
+        self.client.post('/api/v2/offices/register', json=self.candidate,
+                         headers=self.headers)
 
     # clear all lists after tests
     def tearDown(self):
@@ -45,7 +48,8 @@ class TestVote(Base):
     def test_vote(self):
         """ Tests that a vote was created successfully """
 
-        res = self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
+        res = self.client.post('/api/v2/votes', json=self.vote,
+                               headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
@@ -107,7 +111,8 @@ class TestVote(Base):
         """ Tests when user attempts to vote twice for same office """
 
         self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
-        res = self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
+        res = self.client.post('/api/v2/votes', json=self.vote,
+                               headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 409)
@@ -116,7 +121,8 @@ class TestVote(Base):
 
     # tests for GET votes
     def test_get_all_votes(self):
-        res = self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
+        res = self.client.post('/api/v2/votes', json=self.vote,
+                               headers=self.headers)
 
         res = self.client.get('/api/v2/votes', headers=self.headers)
         data = res.get_json()
@@ -137,7 +143,8 @@ class TestVote(Base):
 
     def test_get_all_user_votes(self):
         self.client.post('/api/v2/votes', json=self.vote, headers=self.headers)
-        res = self.client.get('/api/v2/votes/candidate/1', headers=self.headers)
+        res = self.client.get('/api/v2/votes/candidate/1',
+                              headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)

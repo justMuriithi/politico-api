@@ -1,20 +1,16 @@
 from .base_model import BaseModel
 from app.version1.util.validate import validate_strings, validate_bool
-import datetime
-import jwt
 import re
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import (create_access_token, create_refresh_token)
-from flask_jwt_extended import (jwt_required, jwt_refresh_token_required)
-from flask_jwt_extended import (get_jwt_identity, get_raw_jwt)
 
 
 class User(BaseModel):
     """ model for political party """
 
     def __init__(
-            self, first_name=None, last_name=None, national_id=None, email=None, admin=False,
-            password=None, id=None):
+            self, first_name=None, last_name=None, national_id=None,
+            email=None, admin=False, password=None, id=None):
 
         super().__init__('User', 'users')
 
