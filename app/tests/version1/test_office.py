@@ -30,9 +30,9 @@ class TestOffice(Base):
         res = self.client.post('/api/version1/offices', json=self.office)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(data['message'], 'Office already exists')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 400)
 
     def test_create_office_missing_fields(self):
         res = self.client.post('/api/version1/offices', json={
@@ -40,17 +40,17 @@ class TestOffice(Base):
         })
         data = res.get_json()
 
-        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(data['message'], 'name field is required')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 400)
 
     def test_create_office_no_data(self):
         res = self.client.post('/api/version1/offices')
         data = res.get_json()
 
-        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(data['message'], 'No data was provided')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 400)
 
     def test_get_offices(self):
         res = self.client.post('/api/version1/offices', json=self.office)

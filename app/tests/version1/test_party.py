@@ -32,9 +32,9 @@ class TestParty(Base):
         res = self.client.post('/api/version1/parties', json=self.party)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(data['message'], 'Party already exists')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 400)
 
     def test_create_party_missing_fields(self):
         res = self.client.post('/api/version1/parties', json={
@@ -42,17 +42,17 @@ class TestParty(Base):
         })
         data = res.get_json()
 
-        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(data['message'], 'name field is required')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 400)
 
     def test_create_party_no_data(self):
         res = self.client.post('/api/version1/parties')
         data = res.get_json()
 
-        self.assertEqual(data['status'], 404)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(data['message'], 'No data was provided')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 400)
 
     def test_get_parties(self):
         res = self.client.post('/api/version1/parties', json=self.party)
@@ -107,7 +107,7 @@ class TestParty(Base):
         self.assertEqual(data['message'], 'PNU updated successfully')
         self.assertEqual(len(data['data']), 1)
         self.assertEqual(data['data'][0]['id'], 1)
-        self.assertEqual(data['data'][0]['name'], 'Kanu')
+        self.assertEqual(data['data'][0]['name'], 'PNU')
         self.assertEqual(res.status_code, 200)
 
     def test_edit_party_id_not_found(self):

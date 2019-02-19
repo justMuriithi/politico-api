@@ -7,17 +7,17 @@ class TestUsers(Base):
         super().setUp()
 
         self.user = {
-            "firstname": "Tony",
+            "firstname": "John",
             "lastname": "Maina",
-            "national_id": "5549260",
-            "email": "antoineshephmaina@gmail.com",
+            "national_id": "333333",
+            "email": "johndoe@gmail.com",
             "admin": True,
             "password":"nimimi"
         }
 
     # clear all lists after tests
     def tearDown(self):
-        self.user['firstname'] = 'Tony'
+        self.user['firstname'] = 'John'
         super().tearDown()
 
     # tests for POST auth/signup
@@ -27,7 +27,7 @@ class TestUsers(Base):
 
         self.assertEqual(data['status'], 201)
         self.assertEqual(data['message'], 'Success')
-        self.assertEqual(data['data'][0]['user']['firstname'], 'Tony')
+        self.assertEqual(data['data'][0]['user']['firstname'], 'John')
         self.assertIn('token', data['data'][0])
         self.assertEqual(res.status_code, 201)
 
@@ -38,10 +38,10 @@ class TestUsers(Base):
         res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 422)
+        self.assertEqual(data['status'], 409)
         self.assertEqual(
             data['error'], 'A User with that email already exists')
-        self.assertEqual(res.status_code, 422)
+        self.assertEqual(res.status_code, 409)
 
     def test_register_user_missing_fields(self):
         """ Tests when some fields are missing e.g firstname """
