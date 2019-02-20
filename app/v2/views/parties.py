@@ -1,8 +1,9 @@
 from flask import request
 from app.v2.models.parties_model import Party
-from app.v2.util.validate import response, not_admin
+from app.v2.util.validate import response, not_admin, response_error
 from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
+from app.v2.util.jwt_utils import admin_required
 
 
 @bp.route('/parties', methods=['POST', 'GET'])
@@ -65,13 +66,20 @@ def get_party(id):
             '{} deleted successfully'.format(party.name), 200, [data])
 
 
-@bp.route('/parties/<int:id>/<string:name>', methods=['PATCH'])
-@jwt_required
-def edit_party(id, name):
+@bp.route('/parties/<int:id>/name', methods=['PATCH'])
+@admin_required
+def edit_party(id):
 
-    restricted = not_admin()
-    if restricted:
-        return restricted
+    data = request.get_json()
+
+    if not data:
+        return response_error("No data was provided", 400)
+
+    try:
+        name = data['name']
+    except KeyError as e:
+        return response_error(
+            "{} field is required".format(e.args[0]), 400)
 
     model = Party()
     data = model.find_by('id', id)

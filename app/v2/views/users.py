@@ -3,6 +3,7 @@ from app.v2.util.validate import response, response_error
 from app.v2.models.user_model import User
 from app.v2.blueprints import bp
 from werkzeug.security import check_password_hash
+from flask_jwt_extended import get_jwt_identity
 
 
 @bp.route('/auth/signup', methods=['POST'])
@@ -14,19 +15,25 @@ def register_user():
     if not data:
         return response_error("No data was provided", 400)
 
-    try:
-        first_name = data['firstname']
-        last_name = data['lastname']
-        national_id = data['national_id']
-        email = data['email']
-        admin = data['admin']
-        password = data['password']
-    except KeyError as e:
-        return response_error("{} field is required".format(e.args[0]), 400)
-    user = User(first_name, last_name, national_id, email, admin, password)
+    if request.method == 'POST':
+        try:
+            first_name = data['firstname']
+            last_name = data['lastname']
+            national_id = data['national_id']
+            email = data['email']
+            admin = data['admin']
+            password = data['password']
+        except KeyError as e:
+            return response_error("{} field is required"
+                                  .format(e.args[0]), 400)
+
+        user = User(first_name, last_name, national_id, email, admin, password)
 
     if not user.validate_object():
         return response_error(user.error_message, user.error_code)
+
+    if not get_jwt_identity():
+        user.admin = False
 
     user.save()
 

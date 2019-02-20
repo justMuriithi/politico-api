@@ -14,6 +14,8 @@ before_script:
   - psql -c "CREATE DATABASE politico;" -U postgres
   - psql -c "ALTER user postgres PASSWORD 'voter';" -U postgres
   - export DATABASE_URL="dbname='politico' user='postgres' host='127.0.0.1' password='voter'"
+  - export ADMIN_EMAIL="antoineshephmaina@gmail.com"
+  - export ADMIN_PASSWORD="nimimi"
 
 script:
   - pytest --cov=app

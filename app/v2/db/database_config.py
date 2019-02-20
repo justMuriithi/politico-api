@@ -13,8 +13,10 @@ class Database:
     def init_connection(self):
         """ create a connection and a cursor  to access db """
 
-        database_url = app_config[self.config_type].DATABASE_URL
-        print(database_url)
+        config = app_config[self.config_type]
+        database_url = config.DATABASE_URL
+        self.admin_email = config.ADMIN_EMAIL
+        self.admin_password = config.ADMIN_PASSWORD
 
         try:
             global conn, cur
@@ -55,8 +57,9 @@ class Database:
         if not user:
             cur.execute("INSERT INTO users (firstname, lastname, national_id, email, \
                 password, admin) VALUES ('Tony', 'Warui', '5549260', \
-                'antoineshephmaina@gmail.com', '{}', True)\
-            ".format(generate_password_hash('nimimi')))
+                 '{}', '{}', True)\
+            ".format(
+                self.admin_email, generate_password_hash(self.admin_password)))
             conn.commit()
 
     def insert(self, query):

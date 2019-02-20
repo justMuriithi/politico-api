@@ -15,8 +15,6 @@ def create_app(config_name):
     is_prod = os.environ.get('IS_HEROKU', None)
     if is_prod:
         config_name = 'development'
-        os.environ["DATABASE_URL"] = "dbname='politico' host='127.0.0.1'\
-             user='voter' password='voter'"
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])

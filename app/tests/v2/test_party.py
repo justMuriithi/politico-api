@@ -105,7 +105,9 @@ class TestParty(Base):
         self.client.post('/api/v2/parties', json=self.party,
                          headers=self.headers)
 
-        res = self.client.patch('/api/v2/parties/1/PNU', headers=self.headers)
+        res = self.client.patch('/api/v2/parties/1/name', json={
+                "name": "PNU"
+            }, headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
