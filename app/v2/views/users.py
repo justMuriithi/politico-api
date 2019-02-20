@@ -1,8 +1,5 @@
-from flask import Blueprint
 from flask import request
-from flask import jsonify
-from flask import make_response
-from app.v2.util.validate import response, exists, response_error
+from app.v2.util.validate import response, response_error
 from app.v2.models.user_model import User
 from app.v2.blueprints import bp
 from werkzeug.security import check_password_hash
@@ -26,7 +23,6 @@ def register_user():
         password = data['password']
     except KeyError as e:
         return response_error("{} field is required".format(e.args[0]), 400)
-        
     user = User(first_name, last_name, national_id, email, admin, password)
 
     if not user.validate_object():

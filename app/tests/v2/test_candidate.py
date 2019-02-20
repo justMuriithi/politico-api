@@ -111,7 +111,6 @@ class TestCandidate(Base):
         self.assertEqual(data['error'], 'Selected Party does not exist')
         self.assertEqual(res.status_code, 404)
 
-
     def test_register_candidate_user_not_exist(self):
         """ Tests when the candidate does not exist  """
 

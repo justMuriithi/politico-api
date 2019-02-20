@@ -1,4 +1,4 @@
-from app.version1.util.validate import generate_id, exists, validate_ints
+from app.version1.util.validate import generate_id
 
 
 class BaseModel():

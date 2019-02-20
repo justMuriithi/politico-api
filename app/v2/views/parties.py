@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import request
 from app.v2.models.parties_model import Party
-from app.v2.util.validate import response, exists, not_admin
+from app.v2.util.validate import response, not_admin
 from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
 
@@ -34,7 +34,8 @@ def create_party():
         party.save()
 
         # return added party
-        return response("Your political party was created successfully", 201, [party.as_json()])
+        return response("Your political party was created successfully",
+                        201, [party.as_json()])
 
     elif request.method == 'GET':
         """ Get all parties end point """

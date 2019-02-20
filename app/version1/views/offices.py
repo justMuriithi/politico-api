@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify, make_response
-from app.version1.util.validate import response, exists
+from flask import request
+from app.version1.util.validate import response
 from app.version1.models.offices_model import Office
 from app.version1.blueprints import o_bp
 
@@ -32,7 +32,8 @@ def create_office():
         office.save()
 
         # return added office
-        return response("Your political office was created successfully", 201, [office.as_json()])
+        return response("Your political office was created successfully",
+                        201, [office.as_json()])
 
     elif request.method == 'GET':
         """ Get all offices end point """

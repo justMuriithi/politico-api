@@ -12,7 +12,7 @@ class TestUsers(Base):
             "national_id": "333333",
             "email": "johndoe@gmail.com",
             "admin": True,
-            "password":"nimimi"
+            "password": "nimimi"
         }
 
     # clear all lists after tests

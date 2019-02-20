@@ -1,4 +1,3 @@
-from app.v2.util.validate import generate_id, exists, validate_ints
 from app.v2.util.validate import validate_strings
 from .base_model import BaseModel
 
@@ -43,7 +42,8 @@ class Party(BaseModel):
         """ validates the object """
 
         if not validate_strings(self.name, self.hqaddress):
-            self.error_message = "Integer types are not allowed for some fields"
+            self.error_message = "Integer types are not \
+                allowed for some fields"
             self.error_code = 400
             return False
 
