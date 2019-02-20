@@ -30,6 +30,7 @@ def create_app(config_name):
     app.register_blueprint(bp)
 
     JWTManager(app)
+
     @app.route('/')
     @app.route('/index')
     def index():
