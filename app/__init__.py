@@ -34,7 +34,7 @@ def create_app(config_name):
     @app.route('/')
     @app.route('/index')
     def index():
-        """ THe welcome screen of the api """
+        """ The welcome screen of the api """
 
         return redirect(
             'https://app.swaggerhub.com/apis/justMuriithi/politico_api/2')
