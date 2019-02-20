@@ -16,7 +16,8 @@ class TestOffice(Base):
         super().tearDown()
 
     def test_create_office(self):
-        res = self.client.post('/api/v2/offices', json=self.office)
+        res = self.client.post('/api/v2/offices', json=self.office,
+                               headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 201)
@@ -25,8 +26,10 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 201)
 
     def test_create_office_name_exists(self):
-        self.client.post('/api/v2/offices', json=self.office)
-        res = self.client.post('/api/v2/offices', json=self.office)
+        self.client.post('/api/v2/offices', json=self.office,
+                         headers=self.headers)
+        res = self.client.post('/api/v2/offices', json=self.office,
+                               headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 409)
@@ -36,7 +39,7 @@ class TestOffice(Base):
     def test_create_office_missing_fields(self):
         res = self.client.post('/api/v2/offices', json={
             "category": "National"
-        })
+        }, headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -44,7 +47,7 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_create_office_no_data(self):
-        res = self.client.post('/api/v2/offices')
+        res = self.client.post('/api/v2/offices', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 400)
@@ -52,12 +55,14 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_get_offices(self):
-        res = self.client.post('/api/v2/offices', json=self.office)
+        res = self.client.post('/api/v2/offices', json=self.office,
+                               headers=self.headers)
         self.office['name'] = 'One name'
-        res = self.client.post('/api/v2/offices', json=self.office)
+        res = self.client.post('/api/v2/offices', json=self.office,
+                               headers=self.headers)
         self.office['name'] = 'Another name'
 
-        res = self.client.get('/api/v2/offices')
+        res = self.client.get('/api/v2/offices', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -66,7 +71,7 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_offices_no_data(self):
-        res = self.client.get('/api/v2/offices')
+        res = self.client.get('/api/v2/offices', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -75,9 +80,10 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_office(self):
-        self.client.post('/api/v2/offices', json=self.office)
+        self.client.post('/api/v2/offices', json=self.office,
+                         headers=self.headers)
 
-        res = self.client.get('/api/v2/offices/1')
+        res = self.client.get('/api/v2/offices/1', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 200)
@@ -87,7 +93,7 @@ class TestOffice(Base):
         self.assertEqual(res.status_code, 200)
 
     def test_get_office_id_not_found(self):
-        res = self.client.get('/api/v2/offices/35')
+        res = self.client.get('/api/v2/offices/35', headers=self.headers)
         data = res.get_json()
 
         self.assertEqual(data['status'], 404)

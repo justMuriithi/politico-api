@@ -6,7 +6,9 @@ class Config(object):
     DEBUG = False
     SECRET = os.getenv('SECRET')
     """gets the secret key set in the .env file"""
-    DATABASE_URI = os.getenv('DATABASE_URL')
+    DATABASE_URL = os.getenv('DATABASE_URL')
+    ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
+    ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
 
 
 class DevelopmentConfig(Config):
@@ -33,6 +35,7 @@ class ProductionConfig(Config):
     """Configurations for Production."""
     DEBUG = False
     TESTING = False
+    DATABASE_URL = os.getenv('DATABASE_URL')
 
 
 app_config = {
