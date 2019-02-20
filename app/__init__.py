@@ -1,6 +1,6 @@
 '''Creating app'''
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect
 from instance.config import app_config
 from .v2.blueprints import bp
 from .version1.blueprints import o_bp
@@ -30,6 +30,14 @@ def create_app(config_name):
     app.register_blueprint(bp)
 
     JWTManager(app)
+
+    @app.route('/')
+    @app.route('/index')
+    def index():
+        """ The welcome screen of the api """
+
+        return redirect(
+            'https://app.swaggerhub.com/apis/justMuriithi/politico_api/2')
 
     @app.errorhandler(404)
     def page_not_found(error):
