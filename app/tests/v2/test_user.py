@@ -66,28 +66,16 @@ class TestUsers(Base):
         self.assertEqual(res.status_code, 400)
 
     def test_register_user_int_name(self):
-        """ Tests when integer is provided for firstname """
+        """ Tests when Invalid or empty string is provided for firstname """
 
         self.user['firstname'] = 3
         res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 422)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(
-            data['error'], 'Integer types are not allowed for some fields')
-        self.assertEqual(res.status_code, 422)
-
-    def test_register_user_string_bool(self):
-        """ Tests when bool is not provided for admin """
-
-        self.user['admin'] = "true"
-        res = self.client.post('/api/v2/auth/signup', json=self.user)
-        data = res.get_json()
-
-        self.assertEqual(data['status'], 422)
-        self.assertEqual(
-            data['error'], 'admin is supposed to be a boolean value')
-        self.assertEqual(res.status_code, 422)
+            data['error'], 'Invalid or empty string')
+        self.assertEqual(res.status_code, 400)
 
     def test_register_user_invalid_email(self):
         """ Tests when invalid email is provided """
@@ -96,9 +84,9 @@ class TestUsers(Base):
         res = self.client.post('/api/v2/auth/signup', json=self.user)
         data = res.get_json()
 
-        self.assertEqual(data['status'], 422)
+        self.assertEqual(data['status'], 400)
         self.assertEqual(data['error'], 'Invalid email')
-        self.assertEqual(res.status_code, 422)
+        self.assertEqual(res.status_code, 400)
 
     # tests for login
     def test_login_user(self):

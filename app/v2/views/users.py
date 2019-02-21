@@ -21,7 +21,7 @@ def register_user():
             last_name = data['lastname']
             national_id = data['national_id']
             email = data['email']
-            admin = data['admin']
+            admin = False
             password = data['password']
         except KeyError as e:
             return response_error("{} field is required"
