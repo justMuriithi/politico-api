@@ -35,7 +35,7 @@ def create_app(config_name):
         """ The welcome screen of the api """
 
         return redirect(
-            'https://app.swaggerhub.com/apis/justMuriithi/politico_api/2')
+                    'https://app.swaggerhub.com/apis/justMuriithi/politico-api_v_2/1.0-oas3')
 
     @app.errorhandler(404)
     def page_not_found(error):
