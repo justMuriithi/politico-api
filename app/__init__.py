@@ -35,7 +35,7 @@ def create_app(config_name):
         """ The welcome screen of the api """
 
         return redirect(
-            'https://app.swaggerhub.com/apis/justMuriithi/politico_api/2')
+                    'https://app.swaggerhub.com/apis/justMuriithi/politico-api_v_2/1.0-oas3')
 
     @app.errorhandler(404)
     def page_not_found(error):
@@ -43,6 +43,15 @@ def create_app(config_name):
 
         return jsonify({
             'status': 404, 'message': 'The requested resource was not found'
+        })
+
+    @app.errorhandler(500)
+    def internal_server(error):
+        """ Handler for error 500 """
+
+        return jsonify({
+            'status': 500, 'message':
+            'Unable to process your request at this time'
         })
 
     @app.errorhandler(405)
