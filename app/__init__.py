@@ -45,6 +45,15 @@ def create_app(config_name):
             'status': 404, 'message': 'The requested resource was not found'
         })
 
+    @app.errorhandler(500)
+    def internal_server(error):
+        """ Handler for error 500 """
+
+        return jsonify({
+            'status': 500, 'message':
+            'Unable to process your request at this time'
+        })
+
     @app.errorhandler(405)
     def method_not_allowed(error):
         """ Handler for error 405 """
