@@ -6,7 +6,7 @@ from app.v2.models.user_model import User
 from app.v2.models.vote_model import Vote
 from app.v2.util.validate import response, response_error
 from app.v2.blueprints import bp
-from flask_jwt_extended import (jwt_required)
+from flask_jwt_extended import (jwt_required, get_jwt_identity)
 
 
 @bp.route('/votes', methods=['POST', 'GET'])
@@ -21,7 +21,7 @@ def vote():
             return response_error("No data was provided", 400)
 
         try:
-            created_by = data['createdBy']
+            created_by = get_jwt_identity()
             office = data['office']
             candidate = data['candidate']
         except KeyError as e:
