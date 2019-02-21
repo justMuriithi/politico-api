@@ -3,36 +3,27 @@
 
 Politico enables citizens give their mandate to politicians running for different government offices while building trust in the process through transparency.
 
+- [politico_api](https://murmuring-atoll-51852.herokuapp.com) is available on Heroku
 ## API Endpoints
-|`/api/v2/auth/signup` | `POST`| `Register a new user` |
 
-|`/api/v2/auth/login` | `POST`| `Login a registered user` |
-
-| `/api/v2/parties` | `POST` | `Create a political party ` | 
-
-| `/api/v2/parties` | `GET` | `Fetch all political parties ` |
-
-| `/api/v2/parties/<int:id>` | `GET` | `Fetch a specific political party` |
-
-| `/api/v2/parties/<int:id>` | `DELETE` | `Delete a specific political party` |
-
-|`/api/v2/parties/<int:id>/name` | `PATCH` | `Edit a political party` |
-
-|`/api/v2/offices` | `POST`| `Create Political office` |
-
-|`/api/v2/offices` | `GET` | `Fetch all political offices` |
-
-|`/api/v2/offices/register` | `POST`| `Vie for office` |
-
-|`/api/v2/candidates` | `GET` | `Fetch all candidates` |
-
-|`/api/v2/candidates/<int:id>` | `GET` | `Fetch a specific candidate` |
-
-|`/api/v2/votes` | `POST`| `Vote` |
-
-|`/api/v2/votes` | `GET`| `Fetch all Votes` |
-
-|`/api/v2/votes/candidate/<int:id>` | `GET`| `Get all votes for a specific candidate` |
+| ROUTES                              |  METHOD  |         DESCRIPTION                      |
+|-------------------------------------|----------|------------------------------------------|
+|`/api/v2/auth/signup`                | `POST`   | `Register a new user`                    |
+|`/api/v2/auth/login`                 | `POST`   | `Login a registered user`                |
+| `/api/v2/parties`                   | `POST`   | `Create a political party `              | 
+| `/api/v2/parties`                   | `GET`    | `Fetch all political parties `           |
+| `/api/v2/parties/<int:id>`          | `GET`    | `Fetch a specific political party`       |
+| `/api/v2/parties/<int:id>`          | `DELETE` | `Delete a specific political party`      |
+|`/api/v2/parties/<int:id>/name`      | `PATCH`  | `Edit a political party`                 |
+|`/api/v2/offices`                    | `POST`   | `Create Political office`                |
+|`/api/v2/offices`                    | `GET`    | `Fetch all political offices`            |
+|`/api/v2/offices/register`           | `POST`   | `Vie for office`                         |
+|`/api/v2/candidates`                 | `GET`    | `Fetch all candidates`                   |
+|`/api/v2/candidates/<int:id>`        | `GET`    | `Fetch a specific candidate`             |
+|`/api/v2/votes`                      | `POST`   | `Vote`                                   |
+|`/api/v2/votes`                      | `GET`    | `Fetch all Votes`                        |
+|`/api/v2/votes/candidate/<int:id>`   | `GET`    | `Get all votes for a specific candidate` |
+|`/api/v2/offices/<int:id>/result`    | `GET`    | `Get all votes for a specific office`    |
 
 
 ## Requirements
@@ -68,7 +59,7 @@ $ pip3 install -r requirements.txt
   export SECRET="SECRET"
   export APP_SETTINGS="development"
   export DATABASE_URL="dbname='politico' host='127.0.0.1' user='voter' password='voter'"
-
+```
 - Run the app
 ``` 
 $ flask run 
