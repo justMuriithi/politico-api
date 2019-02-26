@@ -6,6 +6,7 @@ from .v2.blueprints import bp
 from .version1.blueprints import o_bp
 from .v2.db.database_config import Database
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 
 def create_app(config_name):
@@ -28,6 +29,7 @@ def create_app(config_name):
     app.register_blueprint(bp)
 
     JWTManager(app)
+    CORS(app)
 
     @app.route('/')
     @app.route('/index')
