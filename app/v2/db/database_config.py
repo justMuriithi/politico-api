@@ -116,7 +116,7 @@ table_queries = [
     CREATE TABLE IF NOT EXISTS parties(
         id SERIAL PRIMARY KEY NOT NULL,
         name VARCHAR(250) NOT NULL,
-        hqAddress VARCHAR(250) NOT NULL,
+        hqaddress VARCHAR(250) NOT NULL,
         UNIQUE(name)
     )
     """,

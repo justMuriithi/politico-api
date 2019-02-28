@@ -5,11 +5,11 @@ from .base_model import BaseModel
 class Party(BaseModel):
     """ model for political party """
 
-    def __init__(self, name=None, hqAddress=None, id=None):
+    def __init__(self, name=None, hqaddress=None, id=None):
         super().__init__('Party', 'parties')
 
         self.name = name
-        self.hqAddress = hqAddress
+        self.hqaddress = hqaddress
         self.id = id
 
     def as_json(self):
@@ -17,19 +17,19 @@ class Party(BaseModel):
         return {
             "id": self.id,
             "name": self.name,
-            "hqAddress": self.hqAddress
+            "hqaddress": self.hqaddress
         }
 
     def save(self):
         """save party to db  """
 
-        data = super().save('name, hqAddress', self.name, self.hqAddress)
+        data = super().save('name, hqaddress', self.name, self.hqaddress)
 
         self.id = data.get('id')
         return data
 
     def from_json(self, json):
-        self.__init__(json['name'], json['hqAddress'])
+        self.__init__(json['name'], json['hqaddress'])
         self.id = json['id']
         return self
 
@@ -41,7 +41,7 @@ class Party(BaseModel):
     def validate_object(self):
         """ validates the object """
 
-        if not validate_strings(self.name, self.hqAddress):
+        if not validate_strings(self.name, self.hqaddress):
             self.error_message = "Integer types are not \
                 allowed for some fields"
             self.error_code = 400

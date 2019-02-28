@@ -17,7 +17,7 @@ class TestVote(Base):
         }
         self.party = {
             "name": "Kanu",
-            "hqAddress": "Eldoret"
+            "hqaddress": "Eldoret"
         }
         self.office = {
             "category": "National",
