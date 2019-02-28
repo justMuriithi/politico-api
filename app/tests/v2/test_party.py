@@ -8,7 +8,7 @@ class TestParty(Base):
 
         self.party = {
             "name": "Kanu",
-            "hqAddress": "Eldoret"
+            "hqaddress": "Eldoret"
         }
     # clear all lists after tests
 
@@ -38,7 +38,7 @@ class TestParty(Base):
 
     def test_create_party_missing_fields(self):
         res = self.client.post('/api/v2/parties', json={
-            "hqAddress": "Eldoret"
+            "hqaddress": "Eldoret"
         }, headers=self.headers)
         data = res.get_json()
 

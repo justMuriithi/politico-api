@@ -15,7 +15,7 @@ class TestCandidate(Base):
         }
         self.party = {
             "name": "Kanu",
-            "hqAddress": "Eldoret",
+            "hqaddress": "Eldoret",
         }
         self.office = {
             "name": "President",

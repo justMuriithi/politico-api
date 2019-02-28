@@ -23,11 +23,11 @@ def create_party():
 
         try:
             name = data['name']
-            hqAddress = data['hqAddress']
+            hqaddress = data['hqaddress']
         except KeyError as e:
             return response("{} field is required".format(e.args[0]), 400)
 
-        party = Party(name, hqAddress)
+        party = Party(name, hqaddress)
 
         if not party.validate_object():
             return response(party.error_message, party.error_code)
