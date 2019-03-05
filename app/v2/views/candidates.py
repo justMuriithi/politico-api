@@ -1,6 +1,7 @@
 from flask import request
 from app.v2.util.validate import response, response_error, not_admin
 from app.v2.models.candidates_model import Candidate
+from app.v2.models.offices_model import Office
 from app.v2.blueprints import bp
 from flask_jwt_extended import (jwt_required)
 
@@ -74,3 +75,15 @@ def get_candidate(id):
         return response_error('Candidate not found', 404)
 
     return response('Success', 200, [data])
+
+
+@bp.route('/offices/<int:office_id>/candidates', methods=['GET'])
+@jwt_required
+def get_office_candidates(office_id):
+    """ Get all candidates of a certain office end point """
+
+    if not Office().find_by('id', office_id):
+        return response_error('Selected Office does not exist', 404)
+
+    return response(
+        'Success', 200, Candidate().find_all_by('office', office_id))
