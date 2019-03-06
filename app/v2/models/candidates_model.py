@@ -26,6 +26,34 @@ class Candidate(BaseModel):
         self.id = data.get('id')
         return data
 
+    def find_by(self, key, value):
+        """ Inner joins all relevant tables to create a candidate object """
+
+        query = """
+        SELECT concat_ws(' ', firstname, lastname) AS candidate,
+         offices.name as office,parties.name as party, candidates.id
+         FROM candidates
+         INNER JOIN users ON users.id = candidates.candidate
+         INNER JOIN parties ON parties.id = candidates.party
+         INNER JOIN offices ON offices.id = candidates.office
+         WHERE candidates.{} = '{}'
+        """.format(key, value)
+        return self.get_one(query)
+
+    def find_all_by(self, key, value):
+        """ Inner joins all relevant tables to create a candidate object """
+
+        query = """
+        SELECT concat_ws(' ', firstname, lastname) AS candidate,
+         offices.name as office,parties.name as party, candidates.id
+         FROM candidates
+         INNER JOIN users ON users.id = candidates.candidate
+         INNER JOIN parties ON parties.id = candidates.party
+         INNER JOIN offices ON offices.id = candidates.office
+         WHERE candidates.{} = '{}'
+        """.format(key, value)
+        return self.get_all(query)
+
     def as_json(self):
         # get the object as a json
         return {
