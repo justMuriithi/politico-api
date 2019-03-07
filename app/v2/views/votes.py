@@ -1,6 +1,4 @@
 from flask import request
-from flask import jsonify
-from flask import make_response
 from app.v2.models.offices_model import Office
 from app.v2.models.user_model import User
 from app.v2.models.vote_model import Vote
@@ -56,8 +54,8 @@ def get_candidate_votes(id):
 
     obtained = [Vote().find_all_by('candidate', id)]
 
-    return vote_response(
-        'Success', 200, len(obtained), obtained)
+    return response(
+        'Success', 200, obtained)
 
 
 @bp.route('/offices/<int:id>/result', methods=['GET'])
@@ -65,18 +63,27 @@ def get_candidate_votes(id):
 def get_office_votes(id):
     """ Gets all votes for a specific office """
 
-    obtained = [Vote().find_all_by('office', id)]
+    obtained = Vote().get_all(
+        """
+        SELECT concat_ws(' ', users.firstname, users.lastname) AS candidate,
+        offices.name as office,
+         (SELECT COUNT(*)
+            FROM votes AS p
+            WHERE p.candidate = e.candidate
+            GROUP BY p.candidate
+         ) AS results,
+         (
+             SELECT parties.name FROM candidates as h
+             INNER JOIN parties ON parties.id = h.party
+             WHERE h.id = e.candidate
+         ) as party
+         FROM votes AS e
+         INNER JOIN users ON users.id = e.candidate
+         INNER JOIN offices ON offices.id = e.office
+         WHERE office = '{}'
+         GROUP BY e.candidate, users.firstname, users.lastname, offices.name
+         ORDER BY results DESC
+        """.format(id)
+    )
 
-    return vote_response(
-        'Success', 200, len(obtained), obtained)
-
-
-def vote_response(message, code, count, data=None):
-    """ Creates a basic reposnse """
-    response = {
-        "status": code,
-        "message": message,
-        "data": data,
-        "count": count
-    }
-    return make_response(jsonify(response), code)
+    return response('Success', 200, obtained)
