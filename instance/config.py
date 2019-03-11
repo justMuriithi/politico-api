@@ -9,6 +9,8 @@ class Config(object):
     DATABASE_URL = os.getenv('DATABASE_URL')
     ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
     ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
+    SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+    SENDGRID_DEFAULT_FROM = os.getenv('SENDGRID_DEFAULT_FROM')
 
 
 class DevelopmentConfig(Config):

@@ -1,6 +1,7 @@
 from flask import make_response, jsonify
 from flask_jwt_extended import get_jwt_identity
 from app.v2.models.user_model import User
+import re
 
 
 def not_admin():
@@ -70,3 +71,9 @@ def validate_ints(*args):
         if not isinstance(value, int):
             return False
     return True
+
+
+def valid_email(email):
+    return re.match(
+                r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$",
+                email)
