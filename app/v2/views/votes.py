@@ -87,3 +87,41 @@ def get_office_votes(id):
     )
 
     return response('Success', 200, obtained)
+
+
+@bp.route('/voting-history', methods=['GET'])
+@jwt_required
+def voting_history():
+    """ Gets voting history for current user """
+
+    current_user = get_jwt_identity()
+
+    obtained = Vote().get_all(
+        """
+        SELECT concat_ws(' ', users.firstname, users.lastname) AS candidate,
+        offices.name as office,
+         (SELECT COUNT(*)
+            FROM votes AS p
+            WHERE p.candidate = e.candidate
+            GROUP BY p.candidate
+         ) AS results,
+         (
+             SELECT parties.name FROM candidates as h
+             INNER JOIN parties ON parties.id = h.party
+             WHERE h.id = e.candidate
+         ) as party,
+         (SELECT COUNT(*)
+            FROM votes AS p
+            WHERE p.office = e.office
+            GROUP BY p.office
+         ) AS total_votes
+         FROM votes AS e
+         INNER JOIN users ON users.id = e.candidate
+         INNER JOIN offices ON offices.id = e.office
+         WHERE createdBy = '{}'
+         GROUP BY e.candidate, users.firstname, users.lastname, offices.name,
+         e.office
+        """.format(current_user)
+    )
+
+    return response('Success', 200, obtained)
